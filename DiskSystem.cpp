@@ -1,5 +1,6 @@
 #include "DiskSystem.h"
 #include <fstream>
+#include "Logger.h"
 
 bool DiskFile::IsStale() const
 {
@@ -7,6 +8,7 @@ bool DiskFile::IsStale() const
 	const long long nano = Timestamp.time_since_epoch().count();
 	if((now - nano) > GcNanoseconds)
 	{
+		Logger::LogInfo("DiskFile::IsStale()", "GC Freeing cached file: " + Path.string());
 		return true;
 	}
 	return false;
@@ -28,7 +30,7 @@ DiskSystem::DiskSystem()
 		{
 			while (!bDestroyed)
 			{
-				std::this_thread::sleep_for(std::chrono::seconds(60));
+				std::this_thread::sleep_for(std::chrono::seconds(GARBAGE_COLLECTOR_THREAD_WAIT));
 				GarbageCollect();
 			}
 		});
@@ -45,7 +47,7 @@ DiskSystem::DiskSystem(const std::string& rootPath)
 	{
 			while (!bDestroyed)
 			{
-				std::this_thread::sleep_for(std::chrono::seconds(60));
+				std::this_thread::sleep_for(std::chrono::seconds(GARBAGE_COLLECTOR_THREAD_WAIT));
 				GarbageCollect();
 			}
 	});
@@ -67,9 +69,9 @@ DiskSystem::~DiskSystem()
 	FileCache.clear();
 }
 
-std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path)
+std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path)
 {
-	std::scoped_lock lock(CacheMut);
+	std::scoped_lock lock(CacheMut, GcMut);
 
 	std::filesystem::path finalPath;
 
@@ -86,6 +88,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path)
 			const auto cachedFile = FileCache.find(finalPath.string());
 			// update when the file data was last accessed
 			cachedFile->second->Timestamp = std::chrono::high_resolution_clock::now();
+			Logger::LogInfo("DiskSystem::GetFileCached()", "Returning cached file: " + cachedFile->second->Path.string());
 			return cachedFile->second;
 		}
 
@@ -96,7 +99,6 @@ std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path)
 	if (std::filesystem::exists(finalPath))
 	{
 		auto diskFile = std::make_shared<DiskFile>();
-		auto diskFileRet = std::make_shared<DiskFile>();
 		diskFile->Path = finalPath;
 		auto time = std::chrono::high_resolution_clock::now();
 		diskFile->Timestamp = std::chrono::high_resolution_clock::now();
@@ -115,10 +117,67 @@ std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path)
 
 
 		FileCache.try_emplace(finalPath.string(), diskFile);
+		Logger::LogInfo("DiskSystem::GetFileCached()", "Loaded file into cache: " + diskFile->Path.string());
 		return diskFile;
 	}
 	return nullptr;
 
+}
+
+std::vector<std::string> DiskSystem::EnumDirectory(const std::string& path, bool bRecursive)
+{
+	std::string finalPath = path;
+	if (bUseRootDirectory)
+	{
+		finalPath = Root.string() + path;
+	}
+	std::vector<std::string> filesFound;
+	if(!bRecursive)
+	{
+		for (const auto& entry : std::filesystem::directory_iterator(finalPath))
+		{
+			filesFound.push_back(entry.path().string());
+		}
+	}
+	else
+	{
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(finalPath))
+		{
+			filesFound.push_back(entry.path().string());
+		}
+	}
+	return filesFound;
+}
+
+std::vector<std::string> DiskSystem::EnumDirectory(const std::string& path, const std::string& extension, bool bRecursive)
+{
+	std::string finalPath = path;
+	if(bUseRootDirectory)
+	{
+		finalPath = Root.string() + path;
+	}
+	std::vector<std::string> filesFound;
+	if (!bRecursive)
+	{
+		for (const auto& entry : std::filesystem::directory_iterator(finalPath))
+		{
+			if(entry.path().extension() == extension)
+			{
+				filesFound.push_back(entry.path().string());
+			}
+		}
+	}
+	else
+	{
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(finalPath))
+		{
+			if (entry.path().extension() == extension)
+			{
+				filesFound.push_back(entry.path().string());
+			}
+		}
+	}
+	return filesFound;
 }
 
 void DiskSystem::SetRootDirectory(const std::string& rootPath)
@@ -133,23 +192,15 @@ void DiskSystem::SetUseRootDirectory(bool bUseRootDir)
 
 void DiskSystem::GarbageCollect()
 {
-	std::scoped_lock lock(GcMut);
+	std::scoped_lock lock(GcMut, CacheMut); //Refactor into one mutex?
 	if (FileCache.empty())
 	{
 		return;
 	}
-	for (const auto& pair : FileCache)
-	{
-		auto file = pair.second;
-
-		std::scoped_lock file_lock(file->Mut);
-		// maybe broken??
-		if (file.use_count() <= 1)
+	std::erase_if(FileCache, [](const std::pair<std::string, std::shared_ptr<DiskFile>>& fpair)
 		{
-			std::erase_if(FileCache, [](const std::pair<std::string, std::shared_ptr<DiskFile>>& fpair)
-				{
-					return fpair.second->IsStale();
-				});
-		}
-	}
-};
+			if(fpair.second.use_count() <= 2) // using this increments it by 1 so we use <=2
+				return fpair.second->IsStale();
+			return false;
+		});
+}

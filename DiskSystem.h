@@ -9,6 +9,11 @@
 #include <chrono>
 #include <thread>
 
+constexpr long long GARBAGE_COLLECTOR_THREAD_WAIT = 60;
+constexpr long long STALE_FILE_SECONDS = 60;
+constexpr long long STALE_FILE_NANOSECONDS = STALE_FILE_SECONDS * 1000000000;
+
+
 struct DiskFile
 {
 	
@@ -19,9 +24,10 @@ struct DiskFile
 
 	friend class DiskSystem;
 private:
+	[[nodiscard]]
 	bool IsStale() const;
 	std::chrono::time_point<std::chrono::steady_clock> Timestamp;
-	long long GcNanoseconds = 60000000000;
+	long long GcNanoseconds = STALE_FILE_NANOSECONDS;
 	std::mutex Mut;
 	std::vector<BYTE> Data;
 };
@@ -32,9 +38,9 @@ public:
 	DiskSystem();
 	DiskSystem(const std::string& rootPath);
 	~DiskSystem();
-	std::shared_ptr<DiskFile> GetFile(const std::string &path);
-	std::vector<std::string> EnumDirectory(const std::string& path);
-	std::vector<std::string> EnumDirectoryEx(const std::string& path, const std::string& extension);
+	std::shared_ptr<DiskFile> GetFileCached(const std::string &path);
+	std::vector<std::string> EnumDirectory(const std::string& path, bool bRecursive);
+	std::vector<std::string> EnumDirectory(const std::string& path, const std::string& extension, bool bRecursive);
 	void SetRootDirectory(const std::string& rootPath);
 	void SetUseRootDirectory(bool bUseRootDir);
 private:
