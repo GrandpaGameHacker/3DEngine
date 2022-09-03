@@ -26,8 +26,11 @@ DiskSystem::DiskSystem()
 	bDestroyed = false;
 	GcThread = std::thread([&]()
 		{
-			std::this_thread::sleep_for(std::chrono::seconds(60));
-			GarbageCollect();
+			while (!bDestroyed)
+			{
+				std::this_thread::sleep_for(std::chrono::seconds(60));
+				GarbageCollect();
+			}
 		});
 	GcThread.detach();
 
@@ -40,8 +43,11 @@ DiskSystem::DiskSystem(const std::string& rootPath)
 	bDestroyed = false;
 	GcThread = std::thread([&]()
 	{
-		std::this_thread::sleep_for(std::chrono::seconds(60));
-		GarbageCollect();
+			while (!bDestroyed)
+			{
+				std::this_thread::sleep_for(std::chrono::seconds(60));
+				GarbageCollect();
+			}
 	});
 	GcThread.detach();
 
@@ -127,27 +133,23 @@ void DiskSystem::SetUseRootDirectory(bool bUseRootDir)
 
 void DiskSystem::GarbageCollect()
 {
-	while(!bDestroyed)
+	std::scoped_lock lock(GcMut);
+	if (FileCache.empty())
 	{
-		std::scoped_lock lock(GcMut);
-		if (FileCache.empty())
-		{
-			continue;
-		}
-		for(const auto &pair : FileCache)
-		{
-			auto file = pair.second;
+		return;
+	}
+	for (const auto& pair : FileCache)
+	{
+		auto file = pair.second;
 
-			std::scoped_lock file_lock(file->Mut);
-			// maybe broken??
-			if(file.use_count() <= 1)
-			{
-				std::erase_if(FileCache,[](const std::pair<std::string, std::shared_ptr<DiskFile>> &fpair)
+		std::scoped_lock file_lock(file->Mut);
+		// maybe broken??
+		if (file.use_count() <= 1)
+		{
+			std::erase_if(FileCache, [](const std::pair<std::string, std::shared_ptr<DiskFile>>& fpair)
 				{
-						return fpair.second->IsStale();
+					return fpair.second->IsStale();
 				});
-			}
 		}
 	}
-	
-}
+};
