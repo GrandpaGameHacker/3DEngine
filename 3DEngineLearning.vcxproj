@@ -144,20 +144,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Applications\TriangleExample.h" />
-    <ClInclude Include="DiskSystem.h" />
+    <ClInclude Include="Utilities\Disk\DiskSystem.h" />
     <ClInclude Include="Interfaces\IApplication.h" />
     <ClInclude Include="Interfaces\IGraphics.h" />
-    <ClInclude Include="Applications\TriangleExampleTwo.h" />
+    <ClInclude Include="Applications\ExampleTwo.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Applications\TriangleExample.cpp" />
-    <ClCompile Include="DiskSystem.cpp" />
+    <ClCompile Include="Utilities\Disk\DiskSystem.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Interfaces\IApplication.cpp" />
     <ClCompile Include="Interfaces\IGraphics.cpp" />
-    <ClCompile Include="Applications\TriangleExampleTwo.cpp" />
+    <ClCompile Include="Applications\ExampleTwo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Applications\Shaders\TriangleExampleFragment.frag" />
+    <None Include="Applications\Shaders\TriangleExampleVertex.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

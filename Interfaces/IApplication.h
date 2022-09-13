@@ -21,7 +21,12 @@ public:
 	std::string GetName() const;
 	glm::ivec2 GetScreenSize() const;
 	glm::ivec2 GetDrawableSize() const ;
-	virtual void Loop() = 0;
+	virtual void PreLoopInit() = 0;
+	virtual void EventLoop() = 0;
+	virtual void Tick() = 0;
+	virtual void Draw() = 0;
+	virtual void Start();
+
 
 protected:
 

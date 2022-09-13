@@ -114,6 +114,17 @@ glm::ivec2 IApplication::GetDrawableSize() const
 	return glm::ivec2({ Width,Height });
 }
 
+void IApplication::Start()
+{
+	PreLoopInit();
+	while(bIsRunning)
+	{
+		EventLoop();
+		Tick();
+		Draw();
+	}
+}
+
 void IApplication::WindowsDPIScaling()
 {
 	typedef enum PROCESS_DPI_AWARENESS

@@ -30,10 +30,10 @@
     <ClInclude Include="Interfaces\IGraphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Applications\TriangleExampleTwo.h">
+    <ClInclude Include="Applications\ExampleTwo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DiskSystem.h">
+    <ClInclude Include="Utilities\Disk\DiskSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,11 +50,15 @@
     <ClCompile Include="Interfaces\IGraphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Applications\TriangleExampleTwo.cpp">
+    <ClCompile Include="Applications\ExampleTwo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DiskSystem.cpp">
+    <ClCompile Include="Utilities\Disk\DiskSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Applications\Shaders\TriangleExampleFragment.frag" />
+    <None Include="Applications\Shaders\TriangleExampleVertex.vert" />
   </ItemGroup>
 </Project>

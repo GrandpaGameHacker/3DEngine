@@ -8,6 +8,7 @@
 #include <mutex>
 #include <chrono>
 #include <thread>
+#include <future>
 
 constexpr long long GARBAGE_COLLECTOR_THREAD_WAIT = 60;
 constexpr long long STALE_FILE_SECONDS = 60;
@@ -21,15 +22,18 @@ struct DiskFile
 	size_t Size;
 
 	std::vector<unsigned char> GetData();
+	std::string& GetTextData();
+	bool IsText() const;
 
 	friend class DiskSystem;
 private:
-	[[nodiscard]]
 	bool IsStale() const;
 	std::chrono::time_point<std::chrono::steady_clock> Timestamp;
+	std::mutex Mut = {};
 	long long GcNanoseconds = STALE_FILE_NANOSECONDS;
-	std::mutex Mut;
+	bool bIsText;
 	std::vector<BYTE> Data;
+	std::string TextData;
 };
 
 class DiskSystem
@@ -38,16 +42,21 @@ public:
 	DiskSystem();
 	DiskSystem(const std::string& rootPath);
 	~DiskSystem();
-	std::shared_ptr<DiskFile> GetFileCached(const std::string &path);
+	std::shared_ptr<DiskFile> GetFileCached(const std::string &path, bool bTextFile);
+	std::shared_ptr<DiskFile> GetFile(const std::string& path, bool bTextFile);
+
+	std::future<std::shared_ptr<DiskFile>> GetFileCachedAsync(const std::string& path, bool bTextFile);
+	std::future<std::shared_ptr<DiskFile>> GetFileAsync(const std::string& path, bool bTextFile);
+
 	std::vector<std::string> EnumDirectory(const std::string& path, bool bRecursive);
 	std::vector<std::string> EnumDirectory(const std::string& path, const std::string& extension, bool bRecursive);
+
 	void SetRootDirectory(const std::string& rootPath);
 	void SetUseRootDirectory(bool bUseRootDir);
 private:
 	void GarbageCollect();
 	std::thread GcThread;
-	std::mutex CacheMut;
-	std::mutex GcMut;
+	std::mutex DiskMut;
 	bool bUseRootDirectory;
 	bool bDestroyed;
 	std::filesystem::path Root;

@@ -1,6 +1,6 @@
 #include "DiskSystem.h"
 #include <fstream>
-#include "Logger.h"
+#include "..\..\Logger.h"
 
 bool DiskFile::IsStale() const
 {
@@ -18,6 +18,17 @@ std::vector<unsigned char> DiskFile::GetData()
 {
 	std::scoped_lock lock(Mut);
 	return Data;
+}
+
+std::string& DiskFile::GetTextData()
+{
+	std::scoped_lock lock(Mut);
+	return TextData;
+}
+
+bool DiskFile::IsText() const
+{
+	return bIsText;
 }
 
 DiskSystem::DiskSystem()
@@ -64,14 +75,14 @@ DiskSystem::DiskSystem(const std::string& rootPath)
 
 DiskSystem::~DiskSystem()
 {
-	std::scoped_lock lock(GcMut, CacheMut);
+	std::scoped_lock lock(DiskMut);
 	bDestroyed = true;
 	FileCache.clear();
 }
 
-std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path)
+std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path, bool bTextFile)
 {
-	std::scoped_lock lock(CacheMut, GcMut);
+	std::scoped_lock lock(DiskMut);
 
 	std::filesystem::path finalPath;
 
@@ -96,32 +107,103 @@ std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path)
 	
 	// cache doesnt exist, Try load file into cache
 
+	auto diskFile = std::make_shared<DiskFile>();
+	diskFile->bIsText = bTextFile;
+	diskFile->Path = finalPath;
+	auto time = std::chrono::high_resolution_clock::now();
+	diskFile->Timestamp = std::chrono::high_resolution_clock::now();
 	if (std::filesystem::exists(finalPath))
 	{
-		auto diskFile = std::make_shared<DiskFile>();
-		diskFile->Path = finalPath;
-		auto time = std::chrono::high_resolution_clock::now();
-		diskFile->Timestamp = std::chrono::high_resolution_clock::now();
-		std::ifstream fileStream(finalPath, std::ios::binary | std::ios::ate);
+		if (!bTextFile)
+		{
+			std::ifstream fileStream(finalPath, std::ios::binary);
+			fileStream.seekg(0, std::ios::end);
+			const std::streampos fileSize = fileStream.tellg();
+			fileStream.seekg(0, std::ios::beg);
 
-		fileStream.seekg(0, std::ios::end);
-		const std::streampos fileSize = fileStream.tellg();
-		fileStream.seekg(0, std::ios::beg);
+			diskFile->Size = fileSize;
+			diskFile->Data.reserve(fileSize);
 
-		diskFile->Size = fileSize;
-		diskFile->Data.reserve(fileSize);
-
-		diskFile->Data.insert(diskFile->Data.begin(),
-			std::istream_iterator<BYTE>(fileStream),
-			std::istream_iterator<BYTE>());
+			diskFile->Data.insert(diskFile->Data.begin(),
+				std::istream_iterator<BYTE>(fileStream),
+				std::istream_iterator<BYTE>());
 
 
-		FileCache.try_emplace(finalPath.string(), diskFile);
-		Logger::LogInfo("DiskSystem::GetFileCached()", "Loaded file into cache: " + diskFile->Path.string());
+			FileCache.try_emplace(finalPath.string(), diskFile);
+			Logger::LogInfo("DiskSystem::GetFileCached()", "Loaded binary file into cache: " + diskFile->Path.string());
+		}
+		else
+		{
+			std::ifstream fileStream(finalPath);
+			std::string lineContents;
+			while (std::getline(fileStream, lineContents)) {
+				diskFile->TextData += lineContents + "\n";
+			}
+			diskFile->Size = diskFile->TextData.length();
+			FileCache.try_emplace(finalPath.string(), diskFile);
+			Logger::LogInfo("DiskSystem::GetFileCached()", "Loaded text file into cache: " + diskFile->Path.string());
+		}
 		return diskFile;
 	}
 	return nullptr;
 
+}
+
+std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path, bool bTextFile)
+{
+	std::scoped_lock lock(DiskMut);
+
+	std::filesystem::path finalPath;
+
+	if (bUseRootDirectory)
+		finalPath = Root;
+
+	finalPath += path;
+	auto diskFile = std::make_shared<DiskFile>();
+	diskFile->bIsText = bTextFile;
+	diskFile->Path = finalPath;
+	auto time = std::chrono::high_resolution_clock::now();
+	diskFile->Timestamp = std::chrono::high_resolution_clock::now();
+	if (std::filesystem::exists(finalPath))
+	{
+		if (!bTextFile)
+		{
+			std::ifstream fileStream(finalPath, std::ios::binary);
+			fileStream.seekg(0, std::ios::end);
+			const std::streampos fileSize = fileStream.tellg();
+			fileStream.seekg(0, std::ios::beg);
+
+			diskFile->Size = fileSize;
+			diskFile->Data.reserve(fileSize);
+
+			diskFile->Data.insert(diskFile->Data.begin(),
+				std::istream_iterator<BYTE>(fileStream),
+				std::istream_iterator<BYTE>());
+			Logger::LogInfo("DiskSystem::GetFile()", "Loaded binary file: " + diskFile->Path.string());
+		}
+		else
+		{
+			std::ifstream fileStream(finalPath);
+			std::string lineContents;
+			while (std::getline(fileStream, lineContents)) {
+				diskFile->TextData += lineContents + "\n";
+			}
+			diskFile->Size = diskFile->TextData.length();
+			Logger::LogInfo("DiskSystem::GetFile()", "Loaded text file: " + diskFile->Path.string());
+		}
+		return diskFile;
+	}
+	return nullptr;
+}
+
+std::future<std::shared_ptr<DiskFile>> DiskSystem::GetFileCachedAsync(const std::string& path, bool bTextFile)
+{
+	return std::async(std::launch::async, &DiskSystem::GetFileCached,this, path, bTextFile);
+}
+
+std::future<std::shared_ptr<DiskFile>> DiskSystem::GetFileAsync(const std::string& path, bool bTextFile)
+{
+	return std::async(std::launch::async, &DiskSystem::GetFile, this, path, bTextFile);
 }
 
 std::vector<std::string> DiskSystem::EnumDirectory(const std::string& path, bool bRecursive)
@@ -192,7 +274,7 @@ void DiskSystem::SetUseRootDirectory(bool bUseRootDir)
 
 void DiskSystem::GarbageCollect()
 {
-	std::scoped_lock lock(GcMut, CacheMut); //Refactor into one mutex?
+	std::scoped_lock lock(DiskMut); //Refactor into one mutex?
 	if (FileCache.empty())
 	{
 		return;
