@@ -16,13 +16,13 @@ bool DiskFile::IsStale() const
 
 std::vector<unsigned char> DiskFile::GetData()
 {
-	std::scoped_lock lock(Mut);
+	std::lock_guard lock(Mut);
 	return Data;
 }
 
 std::string& DiskFile::GetTextData()
 {
-	std::scoped_lock lock(Mut);
+	std::lock_guard lock(Mut);
 	return TextData;
 }
 
@@ -36,34 +36,12 @@ DiskSystem::DiskSystem()
 	FileCache = {};
 	Root = std::filesystem::current_path();
 	bUseRootDirectory = true;
-	bDestroyed = false;
-	GcThread = std::thread([&]()
-		{
-			while (!bDestroyed)
-			{
-				std::this_thread::sleep_for(std::chrono::seconds(GARBAGE_COLLECTOR_THREAD_WAIT));
-				GarbageCollect();
-			}
-		});
-	GcThread.detach();
-
 }
 
 DiskSystem::DiskSystem(const std::string& rootPath)
 {
 	FileCache = {};
 	bUseRootDirectory = false;
-	bDestroyed = false;
-	GcThread = std::thread([&]()
-	{
-			while (!bDestroyed)
-			{
-				std::this_thread::sleep_for(std::chrono::seconds(GARBAGE_COLLECTOR_THREAD_WAIT));
-				GarbageCollect();
-			}
-	});
-	GcThread.detach();
-
 	if (std::filesystem::exists(rootPath))
 	{
 		Root = std::filesystem::path(rootPath);
@@ -75,14 +53,13 @@ DiskSystem::DiskSystem(const std::string& rootPath)
 
 DiskSystem::~DiskSystem()
 {
-	std::scoped_lock lock(DiskMut);
-	bDestroyed = true;
+	std::lock_guard lock(DiskMut);
 	FileCache.clear();
 }
 
 std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path, bool bTextFile)
 {
-	std::scoped_lock lock(DiskMut);
+	std::lock_guard lock(DiskMut);
 
 	std::filesystem::path finalPath;
 
@@ -151,7 +128,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path, boo
 
 std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path, bool bTextFile)
 {
-	std::scoped_lock lock(DiskMut);
+	std::lock_guard lock(DiskMut);
 
 	std::filesystem::path finalPath;
 
@@ -275,11 +252,12 @@ void DiskSystem::SetUseRootDirectory(bool bUseRootDir)
 
 void DiskSystem::GarbageCollect()
 {
-	std::scoped_lock lock(DiskMut); //Refactor into one mutex?
-	if (FileCache.empty())
+	std::scoped_lock lock(DiskMut);
+	if (!FileCache.empty())
 	{
 		return;
 	}
+
 	std::erase_if(FileCache, [](const std::pair<std::string, std::shared_ptr<DiskFile>>& fpair)
 		{
 			if(fpair.second.use_count() <= 2) // using this increments it by 1 so we use <=2

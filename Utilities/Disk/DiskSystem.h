@@ -10,7 +10,6 @@
 #include <thread>
 #include <future>
 
-constexpr long long GARBAGE_COLLECTOR_THREAD_WAIT = 60;
 constexpr long long STALE_FILE_SECONDS = 60;
 constexpr long long STALE_FILE_NANOSECONDS = STALE_FILE_SECONDS * 1000000000;
 
@@ -53,12 +52,10 @@ public:
 
 	void SetRootDirectory(const std::string& rootPath);
 	void SetUseRootDirectory(bool bUseRootDir);
-private:
 	void GarbageCollect();
-	std::thread GcThread;
+private:
 	std::mutex DiskMut;
 	bool bUseRootDirectory;
-	bool bDestroyed;
 	std::filesystem::path Root;
 	std::unordered_map <std::string, std::shared_ptr<DiskFile>> FileCache; // unordered map hashes the string
 };
