@@ -1,21 +1,24 @@
 #include "TriangleExample.h"
-#include "glm/glm.hpp"
 #include "../Logger.h"
 #include "../Utilities/Disk/DiskSystem.h"
 void TriangleExample::PreLoopInit()
 {
-	Initialize("TriangleExample", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600 }, 0);
+	Initialize("TriangleExample", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600 }, NULL);
 
 	const float points[] = {
-   0.0f,  0.5f,  0.0f,
-   0.5f, -0.5f,  0.0f,
-  -0.5f, -0.5f,  0.0f
+		0.0f,  0.0f,  0.0f,
+		+1.0f, +1.0f,  0.0f,
+		-1.0f, +1.0f,  0.0f,
+
+		0.0f,  0.0f,  0.0f,
+		-1.0f, -1.0f,  0.0f,
+		+1.0f, -1.0f,  0.0f
 	};
 
-	GLuint vbo = 0;
+	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), points, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(float), points, GL_STATIC_DRAW);
 
 	vao = 0;
 	glGenVertexArrays(1, &vao);
@@ -76,7 +79,7 @@ void TriangleExample::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgram);
 	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 	SDL_GL_SwapWindow(Window);
 }
 

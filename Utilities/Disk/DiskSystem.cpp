@@ -193,6 +193,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path, bool bTex
 		}
 		return diskFile;
 	}
+	Logger::LogDebug("DiskSystem::GetFile()", "Error: " + diskFile->Path.string() + " did not load");
 	return nullptr;
 }
 

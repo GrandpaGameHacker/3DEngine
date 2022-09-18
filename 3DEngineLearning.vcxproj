@@ -144,22 +144,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Applications\TriangleExample.h" />
+    <ClInclude Include="Applications\SquareExample.h" />
+    <ClInclude Include="Applications\Shaders\Shader.h" />
     <ClInclude Include="Utilities\Disk\DiskSystem.h" />
     <ClInclude Include="Interfaces\IApplication.h" />
     <ClInclude Include="Interfaces\IGraphics.h" />
-    <ClInclude Include="Applications\ExampleTwo.h" />
+    <ClInclude Include="Applications\TextureExample.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="Utilities\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Applications\TriangleExample.cpp" />
+    <ClCompile Include="Applications\SquareExample.cpp" />
+    <ClCompile Include="Applications\Shaders\Shader.cpp" />
     <ClCompile Include="Utilities\Disk\DiskSystem.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Interfaces\IApplication.cpp" />
     <ClCompile Include="Interfaces\IGraphics.cpp" />
-    <ClCompile Include="Applications\ExampleTwo.cpp" />
+    <ClCompile Include="Applications\TextureExample.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Applications\Shaders\TextureExample.frag" />
+    <None Include="Applications\Shaders\TextureExample.vert" />
     <None Include="Applications\Shaders\TriangleExampleFragment.frag" />
     <None Include="Applications\Shaders\TriangleExampleVertex.vert" />
   </ItemGroup>

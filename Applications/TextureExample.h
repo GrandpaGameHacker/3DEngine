@@ -1,9 +1,9 @@
 #pragma once
 #include "..\Interfaces/IApplication.h"
-class ExampleTwo : public IApplication
+class TextureExample : public IApplication
 {
 public:
-	void PreLoopInit();
+	void PreLoopInit() override;
 	void Draw() override;
 	void EventLoop() override;
 	void Tick() override;

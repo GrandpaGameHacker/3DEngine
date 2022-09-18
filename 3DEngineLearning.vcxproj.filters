@@ -30,10 +30,19 @@
     <ClInclude Include="Interfaces\IGraphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Applications\ExampleTwo.h">
+    <ClInclude Include="Applications\TextureExample.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utilities\Disk\DiskSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Applications\SquareExample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Applications\Shaders\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,15 +59,23 @@
     <ClCompile Include="Interfaces\IGraphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Applications\ExampleTwo.cpp">
+    <ClCompile Include="Applications\TextureExample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utilities\Disk\DiskSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Applications\SquareExample.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Applications\Shaders\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Applications\Shaders\TriangleExampleFragment.frag" />
     <None Include="Applications\Shaders\TriangleExampleVertex.vert" />
+    <None Include="Applications\Shaders\TextureExample.frag" />
+    <None Include="Applications\Shaders\TextureExample.vert" />
   </ItemGroup>
 </Project>
