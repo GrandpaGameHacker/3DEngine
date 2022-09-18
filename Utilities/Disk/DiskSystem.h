@@ -7,7 +7,6 @@
 #include <unordered_map>
 #include <mutex>
 #include <chrono>
-#include <thread>
 #include <future>
 
 constexpr long long STALE_FILE_SECONDS = 60;
