@@ -146,6 +146,7 @@
     <ClInclude Include="Applications\TriangleExample.h" />
     <ClInclude Include="Applications\SquareExample.h" />
     <ClInclude Include="Applications\Shaders\Shader.h" />
+    <ClInclude Include="Applications\SquareRotate.h" />
     <ClInclude Include="Utilities\Disk\DiskSystem.h" />
     <ClInclude Include="Interfaces\IApplication.h" />
     <ClInclude Include="Interfaces\IGraphics.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Applications\TriangleExample.cpp" />
     <ClCompile Include="Applications\SquareExample.cpp" />
     <ClCompile Include="Applications\Shaders\Shader.cpp" />
+    <ClCompile Include="Applications\SquareRotate.cpp" />
     <ClCompile Include="Utilities\Disk\DiskSystem.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Interfaces\IApplication.cpp" />

@@ -1,7 +1,7 @@
 #include "IApplication.h"
 #include "..\Logger.h"
 #include "gl\glew.h"
-
+#include <chrono>
 
 IApplication::IApplication() = default;
 
@@ -112,6 +112,14 @@ glm::ivec2 IApplication::GetDrawableSize() const
 	int Width, Height;
 	SDL_GL_GetDrawableSize(Window, &Width, &Height);
 	return glm::ivec2({ Width,Height });
+}
+
+float IApplication::GetDeltaTime()
+{
+	typedef std::chrono::high_resolution_clock Time;
+	static long long started = Time::now().time_since_epoch().count();
+	long long now = Time::now().time_since_epoch().count();
+	return static_cast<float>(now - started) / 1000000000.f;
 }
 
 void IApplication::Start()

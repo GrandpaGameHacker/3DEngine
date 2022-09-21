@@ -1,5 +1,5 @@
 #include "SquareExample.h"
-#include "Shaders/Shader.h"
+
 
 void SquareExample::PreLoopInit()
 {
@@ -35,9 +35,9 @@ void SquareExample::PreLoopInit()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	Shader myShader("/Applications/Shaders/TriangleExampleVertex.vert",
-		"/Applications/Shaders/TriangleExampleFragment.frag");
-	shaderProgram = myShader.GetShaderProgram();
+	MyShader.SetVertexShader("/Applications/Shaders/TriangleExampleVertex.vert");
+	MyShader.SetFragmentShader("/Applications/Shaders/TriangleExampleFragment.frag");
+	MyShader.Compile();
 
 }
 
@@ -76,7 +76,7 @@ void SquareExample::Tick()
 void SquareExample::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(shaderProgram);
+	MyShader.Use();
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(Window);

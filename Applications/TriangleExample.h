@@ -5,11 +5,11 @@
 class TriangleExample : public IApplication
 {
 public:
-	Shader AppShader;
-	GLuint vao = 0;
 	void PreLoopInit() override;
 	void EventLoop() override;
 	void Draw() override;
 	void Tick() override;
+	GLuint vao;
+	Shader MyShader;
 };
 

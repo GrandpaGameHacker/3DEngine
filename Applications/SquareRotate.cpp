@@ -1,19 +1,13 @@
-#include "TextureExample.h"
-#define STB_IMAGE_IMPLEMENTATION
+#include "SquareRotate.h"
 #include "../Utilities/stb_image.h"
 #include "../Logger.h"
-#include <chrono>
-void TextureExample::PreLoopInit()
+void SquareRotate::PreLoopInit()
 {
-	Initialize("Example App Textures", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,600 }, 0);
+	Initialize("Rotating Square Example", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,800 }, NULL);
 
-	MyShader.SetVertexShader("/Applications/Shaders/TextureExample.vert");
-	MyShader.SetFragmentShader("/Applications/Shaders/TextureExample.frag");
+	MyShader.SetVertexShader("/Applications/Shaders/SquareRotate.vert");
+	MyShader.SetFragmentShader("/Applications/Shaders/SquareRotate.frag");
 	MyShader.Compile();
-
-	MySecondShader.SetVertexShader("/Applications/Shaders/TextureExample2.vert");
-	MySecondShader.SetFragmentShader("/Applications/Shaders/TextureExample2.frag");
-	MySecondShader.Compile();
 
 	float vertices[] = {
 		// positions          // colors           // texture coords
@@ -56,7 +50,6 @@ void TextureExample::PreLoopInit()
 	0.5f, 1.0f   // top-center
 	};
 
-
 	float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
@@ -85,30 +78,7 @@ void TextureExample::PreLoopInit()
 	stbi_image_free(data);
 }
 
-void TextureExample::Tick()
-{
-	if (UseCustomShader)
-	{
-		GLint location = glGetUniformLocation(CurrentShader->GetShaderProgram(), "variance");
-		typedef std::chrono::high_resolution_clock Time;
-		auto t0 = Time::now();
-		float fs = t0.time_since_epoch().count() / 10000;
-		glUniform1f(location, sin(fs));
-	}
-}
-
-
-void TextureExample::Draw()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindTexture(GL_TEXTURE_2D, Texture);
-	CurrentShader->Use();
-	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	SDL_GL_SwapWindow(Window);
-}
-
-void TextureExample::EventLoop()
+void SquareRotate::EventLoop()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -121,19 +91,27 @@ void TextureExample::EventLoop()
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				bIsRunning = false;
-			if (event.key.keysym.sym == SDLK_s)
-			{
-				CurrentShader = &MySecondShader;
-				UseCustomShader = true;
-			}
-			if (event.key.keysym.sym == SDLK_a)
-			{
-				CurrentShader = &MyShader;
-				UseCustomShader = false;
-			}
 			break;
 		default:
 			break;
 		}
 	}
+}
+
+void SquareRotate::Tick()
+{
+	glm::mat4 trans = glm::mat4(1.0f); // translation matrix set to the identity matrix
+	trans = glm::rotate(trans, GetDeltaTime(), glm::vec3(0.0, 0.0, 1.0));
+	GLint trans_loc = glGetUniformLocation(MyShader.GetShaderProgram(), "transform");
+	glUniformMatrix4fv(trans_loc, 1, GL_FALSE, glm::value_ptr(trans));
+}
+
+void SquareRotate::Draw()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindTexture(GL_TEXTURE_2D, Texture);
+	MyShader.Use();
+	glBindVertexArray(vao);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	SDL_GL_SwapWindow(Window);
 }

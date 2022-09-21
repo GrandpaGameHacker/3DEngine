@@ -38,7 +38,7 @@ Shader::~Shader()
 	}
 }
 
-void Shader::SetVertexShaderFile(std::string vertexShaderFile)
+void Shader::SetVertexShader(std::string vertexShaderFile)
 {
 	DiskSystem shaderDisk = DiskSystem();
 	auto vshader = shaderDisk.GetFileAsync(vertexShaderFile, true);
@@ -50,7 +50,7 @@ void Shader::SetVertexShaderFile(std::string vertexShaderFile)
 	}
 }
 
-void Shader::SetFragmentShaderFile(std::string fragmentShaderFile)
+void Shader::SetFragmentShader(std::string fragmentShaderFile)
 {
 	DiskSystem shaderDisk = DiskSystem();
 	auto fshader = shaderDisk.GetFileAsync(fragmentShaderFile, true);
@@ -60,16 +60,6 @@ void Shader::SetFragmentShaderFile(std::string fragmentShaderFile)
 	{
 		Logger::LogDebug("Shader::Shader()", "Shader does not exist! | " + FragmentShaderFile);
 	}
-}
-
-void Shader::SetVertexShader(const char* vertexShader)
-{
-	VertexShader = vertexShader;
-}
-
-void Shader::SetFragmentShader(const char* fragmentShader)
-{
-	FragmentShader = fragmentShader;
 }
 
 void Shader::Compile()
