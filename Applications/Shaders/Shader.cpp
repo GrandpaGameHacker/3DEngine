@@ -30,6 +30,14 @@ Shader::Shader(std::string vertexShaderFile, std::string fragmentShaderFile)
 	Compile();
 }
 
+Shader::~Shader()
+{
+	if(isCompiled)
+	{
+		glDeleteProgram(ShaderProgram);
+	}
+}
+
 void Shader::SetVertexShaderFile(std::string vertexShaderFile)
 {
 	DiskSystem shaderDisk = DiskSystem();
@@ -64,7 +72,7 @@ void Shader::SetFragmentShader(const char* fragmentShader)
 	FragmentShader = fragmentShader;
 }
 
-GLuint Shader::Compile()
+void Shader::Compile()
 {
 	auto vs = VertexShader.c_str();
 	auto fs = FragmentShader.c_str();
@@ -84,7 +92,7 @@ GLuint Shader::Compile()
 		glDeleteShader(vertexShader);
 		std::string logInfo = infoLog.data();
 		Logger::LogDebug("Shader::Compile() VertexError: ", logInfo);
-		return 0;
+		return;
 	}
 
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -102,7 +110,7 @@ GLuint Shader::Compile()
 		glDeleteShader(fragmentShader);
 		std::string logInfo = infoLog.data();
 		Logger::LogDebug("Shader::Compile() FragmentError: ", logInfo);
-		return 0;
+		return;
 	}
 
 	ShaderProgram = glCreateProgram();
@@ -123,12 +131,32 @@ GLuint Shader::Compile()
 
 		std::string logInfo = infoLog.data();
 		Logger::LogDebug("Shader::Compile() Link Error: ", logInfo);
-		return 0;
+		return;
 	}
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	isCompiled = true;
-	return ShaderProgram;
+	return;
+}
+
+void Shader::Recompile()
+{
+	if (isCompiled)
+	{
+		glDeleteProgram(ShaderProgram);
+	}
+	DiskSystem shaderDisk = DiskSystem();
+	auto vshader = shaderDisk.GetFileAsync(VertexShaderFile, true);
+	auto fshader = shaderDisk.GetFileAsync(FragmentShaderFile, true);
+	VertexShader = vshader.get()->GetTextData();
+	FragmentShader = fshader.get()->GetTextData();
+	if (VertexShader.empty() || FragmentShader.empty())
+	{
+		Logger::LogDebug("Shader::Shader()", "Shader(s) do not exist! | " + VertexShaderFile + " | " + FragmentShaderFile);
+		isCompiled = false;
+		return;
+	}
+	Compile();
 }
 
 GLuint Shader::GetShaderProgram()
@@ -142,4 +170,12 @@ GLuint Shader::GetShaderProgram()
 		Logger::LogDebug("Shader::GetShaderProgram()", "Error! Shader not compiled!");
 	}
 	return 0;
+}
+
+void Shader::Use()
+{
+	if(isCompiled)
+	{
+		glUseProgram(ShaderProgram);
+	}
 }

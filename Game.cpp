@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 {
 	SDL_SetMainReady();
 	Logger::SetupLogging(Logger::LoggingLevel::All);
-	SquareExample app;
+	TextureExample app;
 	app.Start();
 	return 0;
 }

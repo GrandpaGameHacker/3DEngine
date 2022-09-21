@@ -77,5 +77,7 @@
     <None Include="Applications\Shaders\TriangleExampleVertex.vert" />
     <None Include="Applications\Shaders\TextureExample.frag" />
     <None Include="Applications\Shaders\TextureExample.vert" />
+    <None Include="Applications\Shaders\TextureExample2.frag" />
+    <None Include="Applications\Shaders\TextureExample2.vert" />
   </ItemGroup>
 </Project>

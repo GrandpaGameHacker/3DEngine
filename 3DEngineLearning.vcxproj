@@ -167,6 +167,8 @@
   <ItemGroup>
     <None Include="Applications\Shaders\TextureExample.frag" />
     <None Include="Applications\Shaders\TextureExample.vert" />
+    <None Include="Applications\Shaders\TextureExample2.frag" />
+    <None Include="Applications\Shaders\TextureExample2.vert" />
     <None Include="Applications\Shaders\TriangleExampleFragment.frag" />
     <None Include="Applications\Shaders\TriangleExampleVertex.vert" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "TriangleExample.h"
 #include "../Logger.h"
 #include "../Utilities/Disk/DiskSystem.h"
+#include "Shaders/Shader.h"
 void TriangleExample::PreLoopInit()
 {
 	Initialize("TriangleExample", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600 }, NULL);
@@ -27,31 +28,10 @@ void TriangleExample::PreLoopInit()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-	DiskSystem Disk = DiskSystem();
-	auto vShader = Disk.GetFile("/Applications/Shaders/TriangleExampleVertex.vert", true);
-	auto fShader = Disk.GetFile("/Applications/Shaders/TriangleExampleFragment.frag", true);
-
-	if (!vShader || !fShader)
-	{
-		Logger::LogDebug(" TriangleExample::Draw()", "Error, Shaders not loaded correctly");
-		return;
-	}
-
-	auto vertex_shader = vShader->GetTextData().c_str();
-	auto fragment_shader = fShader->GetTextData().c_str();
-
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertex_shader, nullptr);
-	glCompileShader(vertexShader);
-
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragment_shader, nullptr);
-	glCompileShader(fragmentShader);
-
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
+	Shader AppShader = Shader();
+	AppShader.SetVertexShaderFile("/Applications/Shaders/TriangleExampleVertex.vert");
+	AppShader.SetFragmentShaderFile("/Applications/Shaders/TriangleExampleFragment.frag");
+	shaderProgram = AppShader.Compile();
 }
 
 void TriangleExample::EventLoop()

@@ -6,15 +6,17 @@ class Shader
 public:
 	Shader();
 	Shader(std::string vertexShaderFile, std::string fragmentShaderFile);
-
+	~Shader();
 	void SetVertexShaderFile(std::string vertexShaderFile);
 	void SetFragmentShaderFile(std::string fragmentShaderFile);
 
 	void SetVertexShader(const char* vertexShader);
 	void SetFragmentShader(const char* vertexShader);
 
-	GLuint Compile();
+	void Compile();
+	void Recompile();
 	GLuint GetShaderProgram();
+	void Use();
 
 private:
 	bool isCompiled;
