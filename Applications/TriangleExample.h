@@ -1,10 +1,11 @@
 #pragma once
 #include <gl/glew.h>
+#include "Shaders/Shader.h"
 #include "..\Interfaces/IApplication.h"
 class TriangleExample : public IApplication
 {
 public:
-	GLuint shaderProgram;
+	Shader AppShader;
 	GLuint vao = 0;
 	void PreLoopInit() override;
 	void EventLoop() override;

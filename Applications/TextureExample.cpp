@@ -89,14 +89,6 @@ void TextureExample::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindTexture(GL_TEXTURE_2D, Texture);
-	if(UseCustomShader)
-	{
-		GLint location = glGetUniformLocation(CurrentShader->GetShaderProgram(), "variance");
-		typedef std::chrono::high_resolution_clock Time;
-		auto t0 = Time::now();
-		float fs = t0.time_since_epoch().count()/10000;
-		glUniform1f(location, sin(fs));
-	}
 	CurrentShader->Use();
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -135,5 +127,12 @@ void TextureExample::EventLoop()
 
 void TextureExample::Tick()
 {
-
+	if (UseCustomShader)
+	{
+		GLint location = glGetUniformLocation(CurrentShader->GetShaderProgram(), "variance");
+		typedef std::chrono::high_resolution_clock Time;
+		auto t0 = Time::now();
+		float fs = t0.time_since_epoch().count() / 10000;
+		glUniform1f(location, sin(fs));
+	}
 }

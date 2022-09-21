@@ -28,10 +28,9 @@ void TriangleExample::PreLoopInit()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-	Shader AppShader = Shader();
 	AppShader.SetVertexShaderFile("/Applications/Shaders/TriangleExampleVertex.vert");
 	AppShader.SetFragmentShaderFile("/Applications/Shaders/TriangleExampleFragment.frag");
-	shaderProgram = AppShader.Compile();
+	AppShader.Compile();
 }
 
 void TriangleExample::EventLoop()
@@ -57,7 +56,7 @@ void TriangleExample::EventLoop()
 void TriangleExample::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(shaderProgram);
+	AppShader.Use();
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	SDL_GL_SwapWindow(Window);
