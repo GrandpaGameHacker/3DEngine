@@ -1,6 +1,14 @@
 #include "SquareRotate.h"
 #include "../Utilities/stb_image.h"
 #include "../Logger.h"
+
+SquareRotate::~SquareRotate()
+{
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &ebo);
+}
+
 void SquareRotate::PreLoopInit()
 {
 	Initialize("Rotating Square Example", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,800 }, NULL);
@@ -21,8 +29,6 @@ void SquareRotate::PreLoopInit()
 		1,2,3,
 		0,1,3,
 	};
-
-	GLuint vbo, ebo;
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
@@ -80,18 +86,31 @@ void SquareRotate::PreLoopInit()
 
 void SquareRotate::Tick()
 {
-	glm::mat4 trans = glm::mat4(1.0f); // translation matrix set to the identity matrix
-	trans = glm::rotate(trans, GetDeltaTime(), glm::vec3(0.0, 0.0, 1.0));
-	GLint trans_loc = glGetUniformLocation(MyShader.Get(), "transform");
-	glUniformMatrix4fv(trans_loc, 1, GL_FALSE, glm::value_ptr(trans));
 }
 
 void SquareRotate::Draw()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindTexture(GL_TEXTURE_2D, Texture);
-	MyShader.Use();
 	glBindVertexArray(vao);
+	MyShader.Use();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glm::mat4 trans = glm::mat4(1.0f); // translation matrix set to the identity matrix
+	trans = glm::translate(trans, { 0.5f,-0.5f,0.f });
+	trans = glm::rotate(trans, GetDeltaTime(), glm::vec3(0.0, 0.0, 1.0));
+	GLint trans_loc = glGetUniformLocation(MyShader.Get(), "transform");
+	glUniformMatrix4fv(trans_loc, 1, GL_FALSE, glm::value_ptr(trans));
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	trans = glm::mat4(1.0f);
+	trans = glm::translate(trans, { -0.5f,0.5f,0.f });
+	trans = glm::scale(trans, { sin(GetDeltaTime()),cos(GetDeltaTime()),1.0 });
+	trans_loc = glGetUniformLocation(MyShader.Get(), "transform");
+	glUniformMatrix4fv(trans_loc, 1, GL_FALSE, glm::value_ptr(trans));
+
+
+	glBindTexture(GL_TEXTURE_2D, Texture);
+
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(Window);
 }

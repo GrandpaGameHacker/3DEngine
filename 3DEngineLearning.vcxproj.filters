@@ -85,5 +85,7 @@
     <None Include="Applications\Shaders\TextureExample.vert" />
     <None Include="Applications\Shaders\TextureExample2.frag" />
     <None Include="Applications\Shaders\TextureExample2.vert" />
+    <None Include="Applications\Shaders\SquareRotate.frag" />
+    <None Include="Applications\Shaders\SquareRotate.vert" />
   </ItemGroup>
 </Project>

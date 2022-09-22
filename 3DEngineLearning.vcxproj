@@ -119,6 +119,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,6 +168,8 @@
     <ClCompile Include="Applications\TextureExample.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Applications\Shaders\SquareRotate.frag" />
+    <None Include="Applications\Shaders\SquareRotate.vert" />
     <None Include="Applications\Shaders\TextureExample.frag" />
     <None Include="Applications\Shaders\TextureExample.vert" />
     <None Include="Applications\Shaders\TextureExample2.frag" />

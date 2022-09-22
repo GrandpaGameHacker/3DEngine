@@ -9,9 +9,13 @@
 class SquareRotate :
 	public IApplication
 {
+public:
+	~SquareRotate() override;
+private:
 	void PreLoopInit() override;
 	void Tick() override;
 	void Draw() override;
+	GLuint vbo = 0, ebo = 0;
 	GLuint vao = 0;
 	GLuint Texture = 0;
 	Shader MyShader;
