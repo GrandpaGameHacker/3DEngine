@@ -6,7 +6,7 @@ class SquareExample : public IApplication
 {
 public:
 	void PreLoopInit() override;
-	void EventLoop() override;
+	void EventLoop(SDL_Event* event) override;
 	void Draw() override;
 	void Tick() override;
 	GLuint vao;

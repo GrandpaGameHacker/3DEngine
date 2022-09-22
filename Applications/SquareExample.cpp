@@ -41,31 +41,27 @@ void SquareExample::PreLoopInit()
 
 }
 
-void SquareExample::EventLoop()
+void SquareExample::EventLoop(SDL_Event* event)
 {
-	SDL_Event event;
-	while (SDL_PollEvent(&event))
+	switch (event->type)
 	{
-		switch (event.type)
-		{
-		case SDL_QUIT:
+	case SDL_QUIT:
+		bIsRunning = false;
+		break;
+	case SDL_KEYDOWN:
+		if (event->key.keysym.sym == SDLK_ESCAPE)
 			bIsRunning = false;
-			break;
-		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-				bIsRunning = false;
-			if (event.key.keysym.sym == SDLK_w)
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			}
-			if (event.key.keysym.sym == SDLK_f)
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			}
-			break;
-		default:
-			break;
+		if (event->key.keysym.sym == SDLK_w)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
+		if (event->key.keysym.sym == SDLK_f)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
+		break;
+	default:
+		break;
 	}
 }
 

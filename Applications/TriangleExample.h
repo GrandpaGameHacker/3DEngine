@@ -6,10 +6,10 @@ class TriangleExample : public IApplication
 {
 public:
 	void PreLoopInit() override;
-	void EventLoop() override;
 	void Draw() override;
 	void Tick() override;
-	GLuint vao;
+private:
+	GLuint vao = 0;
 	Shader MyShader;
 };
 

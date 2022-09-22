@@ -12,7 +12,7 @@ public:
 
 	void Compile();
 	void Recompile();
-	GLuint GetShaderProgram();
+	GLuint Get();
 	void Use();
 
 private:

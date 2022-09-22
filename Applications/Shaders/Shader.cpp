@@ -149,7 +149,7 @@ void Shader::Recompile()
 	Compile();
 }
 
-GLuint Shader::GetShaderProgram()
+GLuint Shader::Get()
 {
 	if(isCompiled)
 	{
@@ -157,7 +157,7 @@ GLuint Shader::GetShaderProgram()
 	}
 	else
 	{
-		Logger::LogDebug("Shader::GetShaderProgram()", "Error! Shader not compiled!");
+		Logger::LogDebug("Shader::Get()", "Error! Shader not compiled!");
 	}
 	return 0;
 }

@@ -10,10 +10,9 @@ class SquareRotate :
 	public IApplication
 {
 	void PreLoopInit() override;
-	void EventLoop() override;
 	void Tick() override;
 	void Draw() override;
-	GLuint vao;
-	GLuint Texture;
+	GLuint vao = 0;
+	GLuint Texture = 0;
 	Shader MyShader;
 };

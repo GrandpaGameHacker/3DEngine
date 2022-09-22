@@ -78,31 +78,11 @@ void SquareRotate::PreLoopInit()
 	stbi_image_free(data);
 }
 
-void SquareRotate::EventLoop()
-{
-	SDL_Event event;
-	while (SDL_PollEvent(&event))
-	{
-		switch (event.type)
-		{
-		case SDL_QUIT:
-			bIsRunning = false;
-			break;
-		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-				bIsRunning = false;
-			break;
-		default:
-			break;
-		}
-	}
-}
-
 void SquareRotate::Tick()
 {
 	glm::mat4 trans = glm::mat4(1.0f); // translation matrix set to the identity matrix
 	trans = glm::rotate(trans, GetDeltaTime(), glm::vec3(0.0, 0.0, 1.0));
-	GLint trans_loc = glGetUniformLocation(MyShader.GetShaderProgram(), "transform");
+	GLint trans_loc = glGetUniformLocation(MyShader.Get(), "transform");
 	glUniformMatrix4fv(trans_loc, 1, GL_FALSE, glm::value_ptr(trans));
 }
 

@@ -12,6 +12,7 @@ IApplication::~IApplication()
 	SDL_Quit();
 }
 
+// Must call in PreLoopInit overload!
 bool IApplication::Initialize(const char* appName, SDL_Rect rect,const UInt32 sdlFlags)
 {
 	WindowsDPIScaling();
@@ -122,12 +123,46 @@ float IApplication::GetDeltaTime()
 	return static_cast<float>(now - started) / 1000000000.f;
 }
 
+// rewrite when we create generic rendering classes
+void IApplication::ResizeHandler(SDL_Event* event)
+{
+	if(event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+	{
+		auto screen = GetScreenSize();
+		auto pixel = GetDrawableSize(); //idk yet
+		glViewport(0, 0, screen.x, screen.y);
+		// if we have a render pipeline reset framebuffers here
+	}
+}
+
+// Default Event Loop
+
+void IApplication::EventLoop(SDL_Event* event)
+{
+	switch (event->type)
+	{
+	case SDL_QUIT:
+		bIsRunning = false;
+		break;
+	case SDL_KEYDOWN:
+		if (event->key.keysym.sym == SDLK_ESCAPE)
+			bIsRunning = false;
+		break;
+	default:
+		break;
+	}
+}
+
 void IApplication::Start()
 {
 	PreLoopInit();
 	while(bIsRunning)
 	{
-		EventLoop();
+		SDL_Event event;
+		while (SDL_PollEvent(&event))
+		{
+			EventLoop(&event);
+		}
 		Tick();
 		Draw();
 	}

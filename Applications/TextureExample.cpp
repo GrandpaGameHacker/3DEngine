@@ -89,7 +89,7 @@ void TextureExample::Tick()
 {
 	if (UseCustomShader)
 	{
-		GLint location = glGetUniformLocation(CurrentShader->GetShaderProgram(), "variance");
+		GLint location = glGetUniformLocation(CurrentShader->Get(), "variance");
 		typedef std::chrono::high_resolution_clock Time;
 		auto t0 = Time::now();
 		float fs = t0.time_since_epoch().count() / 10000;
@@ -108,32 +108,28 @@ void TextureExample::Draw()
 	SDL_GL_SwapWindow(Window);
 }
 
-void TextureExample::EventLoop()
+void TextureExample::EventLoop(SDL_Event* event)
 {
-	SDL_Event event;
-	while (SDL_PollEvent(&event))
+	switch (event->type)
 	{
-		switch (event.type)
-		{
-		case SDL_QUIT:
+	case SDL_QUIT:
+		bIsRunning = false;
+		break;
+	case SDL_KEYDOWN:
+		if (event->key.keysym.sym == SDLK_ESCAPE)
 			bIsRunning = false;
-			break;
-		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-				bIsRunning = false;
-			if (event.key.keysym.sym == SDLK_s)
-			{
-				CurrentShader = &MySecondShader;
-				UseCustomShader = true;
-			}
-			if (event.key.keysym.sym == SDLK_a)
-			{
-				CurrentShader = &MyShader;
-				UseCustomShader = false;
-			}
-			break;
-		default:
-			break;
+		if (event->key.keysym.sym == SDLK_s)
+		{
+			CurrentShader = &MySecondShader;
+			UseCustomShader = true;
 		}
+		if (event->key.keysym.sym == SDLK_a)
+		{
+			CurrentShader = &MyShader;
+			UseCustomShader = false;
+		}
+		break;
+	default:
+		break;
 	}
 }

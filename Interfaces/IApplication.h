@@ -20,12 +20,12 @@ public:
 	UInt32 GetFlags() const;
 	std::string GetName() const;
 	glm::ivec2 GetScreenSize() const;
-	glm::ivec2 GetDrawableSize() const ;
-
+	glm::ivec2 GetDrawableSize() const;
 	float GetDeltaTime();
 
+	virtual void ResizeHandler(SDL_Event* event);
 	virtual void PreLoopInit() = 0;
-	virtual void EventLoop() = 0;
+	virtual void EventLoop(SDL_Event* event);
 	virtual void Tick() = 0;
 	virtual void Draw() = 0;
 	virtual void Start();

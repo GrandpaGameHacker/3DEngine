@@ -7,7 +7,7 @@ class TextureExample : public IApplication
 public:
 	void PreLoopInit() override;
 	void Draw() override;
-	void EventLoop() override;
+	void EventLoop(SDL_Event* event) override;
 	void Tick() override;
 	GLuint vao;
 	GLuint Texture;
