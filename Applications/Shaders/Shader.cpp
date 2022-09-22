@@ -169,3 +169,63 @@ void Shader::Use()
 		glUseProgram(ShaderProgram);
 	}
 }
+
+void Shader::Set(std::string name, bool value)
+{
+	glUniform1i(glGetUniformLocation(ShaderProgram, name.c_str()), value);
+}
+
+void Shader::Set(std::string name, int value)
+{
+	glUniform1i(glGetUniformLocation(ShaderProgram, name.c_str()), value);
+}
+
+void Shader::Set(std::string name, float value)
+{
+	glUniform1f(glGetUniformLocation(ShaderProgram, name.c_str()), value);
+}
+
+void Shader::Set(std::string name, glm::vec2 &value)
+{
+	glUniform2fv(glGetUniformLocation(ShaderProgram, name.c_str()), 1, &value[0]);
+}
+
+void Shader::Set(std::string name, float x, float y)
+{
+	glUniform2f(glGetUniformLocation(ShaderProgram, name.c_str()), x, y);
+}
+
+void Shader::Set(std::string name, glm::vec3 &value)
+{
+	glUniform3fv(glGetUniformLocation(ShaderProgram, name.c_str()), 1, &value[0]);
+}
+
+void Shader::Set(std::string name, float x, float y, float z)
+{
+	glUniform3f(glGetUniformLocation(ShaderProgram, name.c_str()), x, y, z);
+}
+
+void Shader::Set(std::string name, glm::vec4 &value)
+{
+	glUniform4fv(glGetUniformLocation(ShaderProgram, name.c_str()), 1, &value[0]);
+}
+
+void Shader::Set(std::string name, float x, float y, float z, float w)
+{
+	glUniform4f(glGetUniformLocation(ShaderProgram, name.c_str()),x ,y ,z ,w);
+}
+
+void Shader::Set(std::string name, glm::mat2 &value)
+{
+	glUniformMatrix2fv(glGetUniformLocation(ShaderProgram, name.c_str()), 1, GL_FALSE, &value[0][0]);
+}
+
+void Shader::Set(std::string name, glm::mat3 &value)
+{
+	glUniformMatrix3fv(glGetUniformLocation(ShaderProgram, name.c_str()), 1, GL_FALSE, &value[0][0]);
+}
+
+void Shader::Set(std::string name, glm::mat4 &value)
+{
+	glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, name.c_str()), 1, GL_FALSE, &value[0][0]);
+}

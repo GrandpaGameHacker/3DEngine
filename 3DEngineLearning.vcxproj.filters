@@ -48,6 +48,9 @@
     <ClInclude Include="Applications\SquareRotate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Applications\First3DExample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Applications\TriangleExample.cpp">
@@ -75,6 +78,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Applications\SquareRotate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Applications\First3DExample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

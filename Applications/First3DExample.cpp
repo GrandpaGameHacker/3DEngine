@@ -1,21 +1,15 @@
-#include "SquareRotate.h"
+#include "First3DExample.h"
+#include <glm/glm.hpp>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "../Utilities/stb_image.h"
 #include "../Logger.h"
-
-SquareRotate::~SquareRotate()
+void First3DExample::PreLoopInit()
 {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
-	glDeleteBuffers(1, &ebo);
-	glDeleteTextures(1, &Texture);
-}
+	Initialize("Example App Textures", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,600 }, 0);
 
-void SquareRotate::PreLoopInit()
-{
-	Initialize("Rotating Square Example", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,800 }, NULL);
-
-	MyShader.SetVertexShader("/Applications/Shaders/SquareRotate.vert");
-	MyShader.SetFragmentShader("/Applications/Shaders/SquareRotate.frag");
+	MyShader.SetVertexShader("/Applications/Shaders/3DExample.vert");
+	MyShader.SetFragmentShader("/Applications/Shaders/3DExample.frag");
 	MyShader.Compile();
 
 	float vertices[] = {
@@ -26,10 +20,12 @@ void SquareRotate::PreLoopInit()
 		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 	};
 
-	int indices[] = {	
+	int indices[] = {
 		1,2,3,
 		0,1,3,
 	};
+
+	GLuint vbo, ebo;
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
@@ -57,10 +53,12 @@ void SquareRotate::PreLoopInit()
 	0.5f, 1.0f   // top-center
 	};
 
+
 	float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
 	int width, height, nrChannels;
+
 	glGenTextures(1, &Texture);
 	glBindTexture(GL_TEXTURE_2D, Texture);
 
@@ -78,36 +76,37 @@ void SquareRotate::PreLoopInit()
 	}
 	else
 	{
-		Logger::LogDebug("TextureExample::PreLoopInit()", "Error, Example texture 'test.jpg' failed to load!");
+		Logger::LogDebug("First3DExample::PreLoopInit()", "Error, Example texture 'test.jpg' failed to load!");
 		bIsRunning = false;
 	}
 	stbi_image_free(data);
 }
 
-void SquareRotate::Tick()
+void First3DExample::Tick()
 {
+
 }
 
-void SquareRotate::Draw()
+void First3DExample::Draw()
 {
-	glBindVertexArray(vao);
+
 	MyShader.Use();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glm::mat4 trans = glm::mat4(1.0f); // translation matrix set to the identity matrix
-	trans = glm::translate(trans, { 0.5f,-0.5f,0.f });
-	trans = glm::rotate(trans, GetDeltaTime(), glm::vec3(0.0, 0.0, 1.0));
-	GLint trans_loc = glGetUniformLocation(MyShader.Get(), "transform");
-	glUniformMatrix4fv(trans_loc, 1, GL_FALSE, glm::value_ptr(trans));
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+	glm::vec2 screen = GetScreenSize();
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	model = glm::rotate(model, glm::radians(-70.f), { 1.0f, 0.0f, 0.0f });
+	view = glm::translate(view, { 0.0f, 0.0f, -2.0f });
+	projection = glm::perspective(glm::radians(45.f), screen.x / screen.y, 0.1f, 100.f);
 
-	trans = glm::mat4(1.0f);
-	trans = glm::translate(trans, { -0.5f,0.5f,0.f });
-	trans = glm::scale(trans, { abs(sin(GetDeltaTime())),abs(sin(GetDeltaTime())),1.0 });
-	trans_loc = glGetUniformLocation(MyShader.Get(), "transform");
-	glUniformMatrix4fv(trans_loc, 1, GL_FALSE, glm::value_ptr(trans));
+	MyShader.Set("projection", projection);
+	MyShader.Set("view", view);
+	MyShader.Set("model", model);
 
+	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(Window);
 }
