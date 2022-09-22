@@ -1,5 +1,4 @@
 #include "TextureExample.h"
-#define STB_IMAGE_IMPLEMENTATION
 #include "../Utilities/stb_image.h"
 #include "../Logger.h"
 #include <chrono>
@@ -49,13 +48,6 @@ void TextureExample::PreLoopInit()
 
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
-
-	float texCoords[] = {
-	0.0f, 0.0f,  // lower-left  
-	1.0f, 0.0f,  // lower-right
-	0.5f, 1.0f   // top-center
-	};
-
 
 	float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);

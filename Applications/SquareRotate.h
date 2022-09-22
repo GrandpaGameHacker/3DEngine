@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Shaders/Shader.h"
-#include "../Interfaces/IApplication.h"
+#include "IApplication.h"
 
 class SquareRotate :
 	public IApplication

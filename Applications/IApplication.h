@@ -1,5 +1,4 @@
 #pragma once
-#include "..\Types.h"
 #include "SDL2/SDL.h"
 #include "glm/glm.hpp"
 #include <string>
@@ -10,14 +9,14 @@ public:
 	virtual ~IApplication();
 	IApplication();
 
-	virtual bool Initialize(const char* appName, SDL_Rect rect, const UInt32 sdlFlags);
+	virtual bool Initialize(const char* appName, SDL_Rect rect, const unsigned int sdlFlags);
 	virtual bool ShowWindow(bool bShow);
 
 	SDL_Window* GetSDLWindow() const;
 	SDL_GLContext GetGLContext() const;
 	bool IsRunning() const;
 	bool IsValid() const;
-	UInt32 GetFlags() const;
+	unsigned int GetFlags() const;
 	std::string GetName() const;
 	glm::ivec2 GetScreenSize() const;
 	glm::ivec2 GetDrawableSize() const;
@@ -38,7 +37,7 @@ protected:
 
 	const char* Name = nullptr;
 	SDL_Rect WRect = {};
-	UInt32 flags = 0;
+	unsigned int flags = 0;
 
 	bool bIsRunning = true;
 	bool bIsWindowValid = true;

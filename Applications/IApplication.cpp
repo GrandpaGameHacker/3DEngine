@@ -13,7 +13,7 @@ IApplication::~IApplication()
 }
 
 // Must call in PreLoopInit overload!
-bool IApplication::Initialize(const char* appName, SDL_Rect rect,const UInt32 sdlFlags)
+bool IApplication::Initialize(const char* appName, SDL_Rect rect,const unsigned int sdlFlags)
 {
 	WindowsDPIScaling();
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -91,7 +91,7 @@ bool IApplication::IsValid() const
 	return bIsWindowValid;
 }
 
-UInt32 IApplication::GetFlags() const
+unsigned int IApplication::GetFlags() const
 {
 	return flags;
 }

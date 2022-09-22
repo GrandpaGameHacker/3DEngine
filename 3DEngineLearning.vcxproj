@@ -149,11 +149,11 @@
     <ClInclude Include="Applications\Shaders\Shader.h" />
     <ClInclude Include="Applications\SquareRotate.h" />
     <ClInclude Include="Applications\First3DExample.h" />
+    <ClInclude Include="Textures\Texture2D.h" />
+    <ClInclude Include="Textures\ITexture.h" />
     <ClInclude Include="Utilities\Disk\DiskSystem.h" />
-    <ClInclude Include="Interfaces\IApplication.h" />
-    <ClInclude Include="Interfaces\IGraphics.h" />
+    <ClInclude Include="Applications\IApplication.h" />
     <ClInclude Include="Applications\TextureExample.h" />
-    <ClInclude Include="Types.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Utilities\stb_image.h" />
   </ItemGroup>
@@ -163,10 +163,11 @@
     <ClCompile Include="Applications\Shaders\Shader.cpp" />
     <ClCompile Include="Applications\SquareRotate.cpp" />
     <ClCompile Include="Applications\First3DExample.cpp" />
+    <ClCompile Include="Textures\ITexture.cpp" />
+    <ClCompile Include="Textures\Texture2D.cpp" />
     <ClCompile Include="Utilities\Disk\DiskSystem.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Interfaces\IApplication.cpp" />
-    <ClCompile Include="Interfaces\IGraphics.cpp" />
+    <ClCompile Include="Applications\IApplication.cpp" />
     <ClCompile Include="Applications\TextureExample.cpp" />
   </ItemGroup>
   <ItemGroup>

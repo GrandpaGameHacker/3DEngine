@@ -47,39 +47,7 @@ void First3DExample::PreLoopInit()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	float texCoords[] = {
-	0.0f, 0.0f,  // lower-left  
-	1.0f, 0.0f,  // lower-right
-	0.5f, 1.0f   // top-center
-	};
-
-
-	float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-	int width, height, nrChannels;
-
-	glGenTextures(1, &Texture);
-	glBindTexture(GL_TEXTURE_2D, Texture);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load("test.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		Logger::LogDebug("First3DExample::PreLoopInit()", "Error, Example texture 'test.jpg' failed to load!");
-		bIsRunning = false;
-	}
-	stbi_image_free(data);
+	Texture = Texture2D("test.jpg");
 }
 
 void First3DExample::Tick()
@@ -98,13 +66,15 @@ void First3DExample::Draw()
 	glm::mat4 projection = glm::mat4(1.0f);
 	glm::vec2 screen = GetScreenSize();
 
-	model = glm::rotate(model, glm::radians(-70.f), { 1.0f, 0.0f, 0.0f });
+	model = glm::rotate(model, GetDeltaTime(), { 0.0f, 1.0f, 0.0f });
 	view = glm::translate(view, { 0.0f, 0.0f, -2.0f });
 	projection = glm::perspective(glm::radians(45.f), screen.x / screen.y, 0.1f, 100.f);
 
 	MyShader.Set("projection", projection);
 	MyShader.Set("view", view);
 	MyShader.Set("model", model);
+
+	Texture.Bind();
 
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

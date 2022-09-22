@@ -1,7 +1,7 @@
 #pragma once
 #include <gl/glew.h>
 #include "Shaders/Shader.h"
-#include "../Interfaces/IApplication.h"
+#include "IApplication.h"
 class SquareExample : public IApplication
 {
 public:
