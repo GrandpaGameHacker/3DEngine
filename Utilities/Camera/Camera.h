@@ -39,6 +39,7 @@ public:
 
 	void SetType(CameraType type);
 	void SetMode(CameraMode mode);
+	void SetMovement(CameraMove move, bool moving);
 	void SetPosition(glm::vec3 pos);
 	void SetLookAtTarget(glm::vec3 pos);
 	void SetFOV(double fov);
@@ -53,7 +54,7 @@ public:
 private:
 	CameraType EType;
 	CameraMode EMode;
-
+	CameraMove EMovement;
 	int ViewportX, ViewportY;
 	int WindowWidth, WindowHeight;
 
@@ -61,6 +62,7 @@ private:
 	double FOV;
 	double NClip;
 	double FClip;
+	bool bRotating;
 	bool bMoving;
 	float Scale;
 	float RotationScale;

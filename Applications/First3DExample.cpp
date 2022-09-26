@@ -72,20 +72,35 @@ void First3DExample::EventLoop(SDL_Event* event)
 		switch (event->key.keysym.sym)
 		{
 			case 'w':
-				MyCamera.Move(CameraMove::Forward);
+				MyCamera.SetMovement(CameraMove::Forward, true);
 			break;
 			case 's':
-				MyCamera.Move(CameraMove::Back);
+				MyCamera.SetMovement(CameraMove::Back, true);
 			break;
 			case 'a':
-				MyCamera.Move(CameraMove::Left);
+				MyCamera.SetMovement(CameraMove::Left, true);
 				break;
 			case 'd':
-				MyCamera.Move(CameraMove::Right);
+				MyCamera.SetMovement(CameraMove::Right, true);
 				break;
-
 		}
 			break;
+	case SDL_KEYUP:
+		switch (event->key.keysym.sym)
+		{
+		case 'w':
+			MyCamera.SetMovement(CameraMove::Forward, false);
+			break;
+		case 's':
+			MyCamera.SetMovement(CameraMove::Back, false);
+			break;
+		case 'a':
+			MyCamera.SetMovement(CameraMove::Left, false);
+			break;
+		case 'd':
+			MyCamera.SetMovement(CameraMove::Right, false);
+			break;
+		}
 	case SDL_MOUSEMOTION:
 		MyCamera.Rotate2D(event->motion.x , event->motion.y);
 		break;

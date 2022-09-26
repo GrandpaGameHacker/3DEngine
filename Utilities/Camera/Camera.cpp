@@ -24,12 +24,12 @@ Camera::Camera()
 	PositionDelta = glm::vec3(0, 0, 0);
 
 	Scale = 0.1f;
-	RotationScale = 0.08f;
+	RotationScale = 0.008f;
 	MaxYawRate = 5;
 	MaxPitchRate = 5;
 	MaxRollRate = 5;
+	bRotating = false;
 	bMoving = false;
-
 	LookAt = glm::vec3(0, 0, 0);
 	Direction = glm::vec3(0, 0, 0);
 	Mouse = glm::vec3(0, 0, 0);
@@ -42,6 +42,9 @@ Camera::Camera()
 
 void Camera::Update()
 {
+	// bug?? if rotating at same time rotation gets fuxxed
+	if (bMoving)
+		Move(EMovement);
 	Direction = glm::normalize(LookAt - Position);
 	glViewport(ViewportX, ViewportY, WindowWidth, WindowHeight);
 
@@ -75,6 +78,12 @@ void Camera::Update()
 void Camera::Reset()
 {
 	Up = glm::vec3(0, 1, 0);
+}
+
+void Camera::SetMovement(CameraMove move, bool moving)
+{
+	EMovement = move;
+	bMoving = moving;
 }
 
 void Camera::Move(CameraMove direction)
@@ -173,7 +182,7 @@ void Camera::ChangeRoll(float degrees)
 void Camera::Rotate2D(int x, int y)
 {
 	glm::vec3 MouseDelta = Mouse - glm::vec3(x, y, 0);
-	if(bMoving)
+	if(bRotating)
 	{
 		ChangeYaw(RotationScale * MouseDelta.x);
 		ChangePitch(RotationScale * MouseDelta.y);
@@ -226,11 +235,11 @@ void Camera::SetPos(int button, int state, int x, int y)
 {
 	if (button == SDL_BUTTON_LEFT && state == 1)
 	{
-		bMoving = true;
+		bRotating = true;
 	}
 	else if (button == SDL_BUTTON_LEFT && state != 1)
 	{
-		bMoving = false;
+		bRotating = false;
 	}
 
 	Mouse = glm::vec3(x, y, 0);
