@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../Utilities/stb_image.h"
 #include "../Logger.h"
+
 void First3DExample::PreLoopInit()
 {
 	Initialize("Example App Textures", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,600 }, 0);
@@ -47,7 +48,10 @@ void First3DExample::PreLoopInit()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	Texture = Texture2D("test.jpg");
+	Texture = Texture2D("Logo_1024x1024.png");
+	MyCamera.SetPosition({0.f, 0.f, 3.f});
+	MyCamera.SetViewport(WRect.x, WRect.y, WRect.w, WRect.h);
+	MyCamera.SetType(CameraType::Perspective);
 }
 
 void First3DExample::Tick()
@@ -55,28 +59,67 @@ void First3DExample::Tick()
 
 }
 
+void First3DExample::EventLoop(SDL_Event* event)
+{
+	IApplication::EventLoop(event);
+	switch(event->type)
+	{
+	case SDL_WINDOWEVENT:
+		if (event->window.event != SDL_WINDOWEVENT_SIZE_CHANGED) break;
+		ResizeHandler(event);
+		break;
+	case SDL_KEYDOWN:
+		switch (event->key.keysym.sym)
+		{
+			case 'w':
+				MyCamera.Move(CameraMove::Forward);
+			break;
+			case 's':
+				MyCamera.Move(CameraMove::Back);
+			break;
+			case 'a':
+				MyCamera.Move(CameraMove::Left);
+				break;
+			case 'd':
+				MyCamera.Move(CameraMove::Right);
+				break;
+
+		}
+			break;
+	case SDL_MOUSEMOTION:
+		MyCamera.Rotate2D(event->motion.x , event->motion.y);
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		MyCamera.SetPos(event->button.button, event->button.state, event->button.x, event->button.y);
+		break;
+	case SDL_MOUSEBUTTONUP:
+		MyCamera.SetPos(event->button.button, event->button.state, event->button.x, event->button.y);
+	default:
+		break;
+	}
+}
+
 void First3DExample::Draw()
 {
 
 	MyShader.Use();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glm::mat4 model = glm::mat4(1.0f);
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projection = glm::mat4(1.0f);
-	glm::vec2 screen = GetScreenSize();
-
-	model = glm::rotate(model, GetDeltaTime(), { 0.0f, 1.0f, 0.0f });
-	view = glm::translate(view, { 0.0f, 0.0f, -2.0f });
-	projection = glm::perspective(glm::radians(45.f), screen.x / screen.y, 0.1f, 100.f);
-
-	MyShader.Set("projection", projection);
-	MyShader.Set("view", view);
-	MyShader.Set("model", model);
-
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);;
+	glm::mat4 MVP;
+	MyCamera.Update();
+	MyCamera.GetMVP(MVP);
+	MyShader.Set("MVP", MVP);
 	Texture.Bind();
 
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(Window);
+}
+
+void First3DExample::ResizeHandler(SDL_Event* event)
+{
+	auto screen = GetScreenSize();
+	int x, y;
+	SDL_GetWindowPosition(Window, &x, &y);
+	WRect = { x,y,screen.x, screen.y };
+	MyCamera.SetViewport(x, y, screen.x, screen.y);
 }

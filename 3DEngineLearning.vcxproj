@@ -151,6 +151,7 @@
     <ClInclude Include="Applications\First3DExample.h" />
     <ClInclude Include="Textures\Texture2D.h" />
     <ClInclude Include="Textures\ITexture.h" />
+    <ClInclude Include="Utilities\Camera\Camera.h" />
     <ClInclude Include="Utilities\Disk\DiskSystem.h" />
     <ClInclude Include="Applications\IApplication.h" />
     <ClInclude Include="Applications\TextureExample.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="Applications\First3DExample.cpp" />
     <ClCompile Include="Textures\ITexture.cpp" />
     <ClCompile Include="Textures\Texture2D.cpp" />
+    <ClCompile Include="Utilities\Camera\Camera.cpp" />
     <ClCompile Include="Utilities\Disk\DiskSystem.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Applications\IApplication.cpp" />

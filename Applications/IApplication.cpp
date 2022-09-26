@@ -50,6 +50,7 @@ bool IApplication::Initialize(const char* appName, SDL_Rect rect,const unsigned 
 	const std::string version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 	Logger::LogInfo("Renderer -", renderer);
 	Logger::LogInfo("OpenGL Version -", version);
+	WRect = { 0,0, rect.w, rect.h };
 	return true;
 }
 
@@ -128,10 +129,11 @@ void IApplication::ResizeHandler(SDL_Event* event)
 {
 	if(event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 	{
-		auto screen = GetScreenSize();
-		auto pixel = GetDrawableSize(); //idk yet
-		glViewport(0, 0, screen.x, screen.y);
-		// if we have a render pipeline reset framebuffers here
+		auto screen = GetDrawableSize();
+		int x, y;
+		SDL_GetWindowPosition(Window, &x, &y);
+		WRect = { x,y,screen.x, screen.y };
+		glViewport(x, y, screen.x, screen.y);
 	}
 }
 
