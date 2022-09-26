@@ -192,6 +192,7 @@ void Camera::Rotate2D(int x, int y)
 
 void Camera::SetType(CameraType type)
 {
+	EType = type;
 }
 
 void Camera::SetMode(CameraMode mode)
