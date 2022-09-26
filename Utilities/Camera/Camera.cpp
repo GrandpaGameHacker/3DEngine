@@ -55,12 +55,15 @@ void Camera::Update()
 	else if(EType == CameraType::Perspective)
 	{
 		Projection = glm::perspective(FOV, Aspect, NClip, FClip);
-		glm::vec3 Axis = glm::cross(Direction, Up);
-		glm::quat QPitch = glm::angleAxis(Pitch, Axis);
+		glm::vec3 PAxis = glm::cross(Direction, Up);
+		glm::quat QPitch = glm::angleAxis(Pitch, PAxis);
 		glm::quat QYaw = glm::angleAxis(Yaw, Up);
+		glm::quat QRoll = glm::angleAxis(Roll, Direction);
 		glm::quat QTemp = glm::cross(QPitch, QYaw);
+		QRoll = glm::normalize(QRoll);
 		QTemp = glm::normalize(QTemp);
 		Direction = glm::rotate(QTemp, Direction);
+		Up = glm::rotate(QRoll, Up);
 		Position += PositionDelta;
 		LookAt = Position + Direction * 1.0f;
 
@@ -158,6 +161,7 @@ void Camera::ChangeYaw(float degrees)
 
 void Camera::ChangeRoll(float degrees)
 {
+	// Unused
 	if (degrees < -MaxRollRate)
 	{
 		degrees = -MaxRollRate;
