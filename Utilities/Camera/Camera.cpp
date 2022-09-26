@@ -24,7 +24,7 @@ Camera::Camera()
 	PositionDelta = glm::vec3(0, 0, 0);
 
 	Scale = 0.1f;
-	RotationScale = 0.08;
+	RotationScale = 0.08f;
 	MaxYawRate = 5;
 	MaxPitchRate = 5;
 	MaxRollRate = 5;
