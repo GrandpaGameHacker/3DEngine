@@ -17,6 +17,7 @@ struct DiskFile
 {
 	
 	std::filesystem::path Path;
+	std::string Name;
 	size_t Size;
 
 	std::vector<unsigned char> GetData();

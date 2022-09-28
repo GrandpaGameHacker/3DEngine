@@ -14,8 +14,8 @@ void SquareRotate::PreLoopInit()
 {
 	Initialize("Rotating Square Example", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,800 }, NULL);
 
-	MyShader.SetVertexShader("/Applications/Shaders/SquareRotate.vert");
-	MyShader.SetFragmentShader("/Applications/Shaders/SquareRotate.frag");
+	MyShader.SetVertexShader("/Applications/Shaders/SquareRotate.vs");
+	MyShader.SetFragmentShader("/Applications/Shaders/SquareRotate.fs");
 	MyShader.Compile();
 
 	float vertices[] = {

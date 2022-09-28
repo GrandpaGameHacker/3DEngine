@@ -29,8 +29,8 @@ void TriangleExample::PreLoopInit()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-	MyShader.SetVertexShader("/Applications/Shaders/TriangleExampleVertex.vert");
-	MyShader.SetFragmentShader("/Applications/Shaders/TriangleExampleFragment.frag");
+	MyShader.SetVertexShader("/Applications/Shaders/TriangleExampleVertex.vs");
+	MyShader.SetFragmentShader("/Applications/Shaders/TriangleExampleFragment.fs");
 	MyShader.Compile();
 }
 

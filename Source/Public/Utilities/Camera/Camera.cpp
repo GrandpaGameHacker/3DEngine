@@ -7,31 +7,38 @@ Camera::Camera()
 {
 	EMode = CameraMode::Normal;
 	EType = CameraType::PerspectiveFreecam;
+	EMovement = CameraMove::None;
 
 	ViewportX = 0; ViewportY = 0;
 	WindowHeight = 0; WindowWidth = 0;
+
 	Aspect = 0;
 	NClip = 0.01;
 	FClip = 100;
+
+	Up = glm::vec3(0, 1, 0);
+	FOV = 45;
+	
+	Rotation = glm::quat(1, 0, 0, 0);
+	Position = glm::vec3(0, 0, 0);
+	PositionDelta = glm::vec3(0, 0, 0);
 
 	Yaw = 0;
 	Pitch = 0;
 	Roll = 0;
 
-	Up = glm::vec3(0, 1, 0);
-	FOV = 45;
-	Rotation = glm::quat(1, 0, 0, 0);
-	Position = glm::vec3(0, 0, 0);
-	PositionDelta = glm::vec3(0, 0, 0);
-
 	Scale = 0.1f;
 	RotationScale = 0.008f;
 	RollScale = 0.001f;
+
 	MaxYawRate = 5;
 	MaxPitchRate = 5;
 	MaxRollRate = 5;
+
 	bRotating = false;
 	bMoving = false;
+	bRolling = false;
+	
 	LookAt = glm::vec3(0, 0, 0);
 	Direction = glm::vec3(0, 0, 0);
 	Mouse = glm::vec3(0, 0, 0);
@@ -40,6 +47,8 @@ Camera::Camera()
 	View = glm::mat4(1);
 	Model = glm::mat4(1);
 	MVP = glm::mat4(1);
+
+	Logger::LogInfo("Camera::Camera()", "Initialized Default Camera");
 }
 
 void Camera::Update()
@@ -132,6 +141,8 @@ void Camera::Move(CameraMove direction)
 		case CameraMove::Back:
 			PositionDelta -= Direction * Scale;
 			break;
+		case CameraMove::None:
+			return;
 		}
 	}
 }

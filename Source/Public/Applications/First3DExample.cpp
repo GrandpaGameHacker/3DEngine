@@ -48,7 +48,8 @@ void First3DExample::PreLoopInit()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	Texture = Texture2D("Logo_1024x1024.png");
+	MyTexture = Texture(GL_TEXTURE_2D,"Logo_1024x1024.png");
+	MyTexture.Load();
 	MyCamera.SetPosition({0.f, 0.f, 3.f});
 	MyCamera.SetViewport(WRect.x, WRect.y, WRect.w, WRect.h);
 	MyCamera.SetType(CameraType::PerspectiveFreecam);
@@ -124,10 +125,10 @@ void First3DExample::Draw()
 	MyShader.Use();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);;
 	glm::mat4 MVP;
+	MyTexture.Bind(0);
 	MyCamera.Update();
 	MyCamera.GetMVP(MVP);
 	MyShader.Set("MVP", MVP);
-	Texture.Bind();
 
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

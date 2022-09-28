@@ -35,8 +35,8 @@ void SquareExample::PreLoopInit()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	MyShader.SetVertexShader("/Applications/Shaders/TriangleExampleVertex.vert");
-	MyShader.SetFragmentShader("/Applications/Shaders/TriangleExampleFragment.frag");
+	MyShader.SetVertexShader("/Applications/Shaders/TriangleExampleVertex.vs");
+	MyShader.SetFragmentShader("/Applications/Shaders/TriangleExampleFragment.fs");
 	MyShader.Compile();
 
 }

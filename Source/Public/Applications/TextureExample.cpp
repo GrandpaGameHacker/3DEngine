@@ -6,12 +6,12 @@ void TextureExample::PreLoopInit()
 {
 	Initialize("Example App Textures", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,600 }, 0);
 
-	MyShader.SetVertexShader("/Applications/Shaders/TextureExample.vert");
-	MyShader.SetFragmentShader("/Applications/Shaders/TextureExample.frag");
+	MyShader.SetVertexShader("/Applications/Shaders/TextureExample.vs");
+	MyShader.SetFragmentShader("/Applications/Shaders/TextureExample.fs");
 	MyShader.Compile();
 
-	MySecondShader.SetVertexShader("/Applications/Shaders/TextureExample2.vert");
-	MySecondShader.SetFragmentShader("/Applications/Shaders/TextureExample2.frag");
+	MySecondShader.SetVertexShader("/Applications/Shaders/TextureExample2.vs");
+	MySecondShader.SetFragmentShader("/Applications/Shaders/TextureExample2.fs");
 	MySecondShader.Compile();
 
 	float vertices[] = {

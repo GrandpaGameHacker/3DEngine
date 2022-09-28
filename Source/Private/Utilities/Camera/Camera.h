@@ -19,7 +19,7 @@ enum class CameraMode
 
 enum class CameraMove
 {
-	// Refactor to allow movement in multiple directions at once!
+	None,
 	Up, Down, Left, Right, Forward, Back
 
 };

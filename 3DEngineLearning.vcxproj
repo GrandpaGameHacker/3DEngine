@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Private\Utilities\Mesh\Mesh.h" />
     <ClInclude Include="Source\Private\Applications\First3DExample.h" />
     <ClInclude Include="Source\Private\Applications\IApplication.h" />
     <ClInclude Include="Source\Private\Applications\SquareExample.h" />
@@ -157,13 +158,12 @@
     <ClInclude Include="Source\Private\Utilities\Logger.h" />
     <ClInclude Include="Source\Private\Utilities\Camera\Camera.h" />
     <ClInclude Include="Source\Private\Utilities\Disk\DiskSystem.h" />
-    <ClInclude Include="Source\Private\Utilities\Mesh\Mesh.h" />
     <ClInclude Include="Source\Private\Utilities\Shader\Shader.h" />
     <ClInclude Include="Source\Private\Utilities\stb_image.h" />
-    <ClInclude Include="Source\Private\Utilities\Texture\ITexture.h" />
-    <ClInclude Include="Source\Private\Utilities\Texture\Texture2D.h" />
+    <ClInclude Include="Source\Private\Utilities\Texture\Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Public\Utilities\Mesh\Mesh.cpp" />
     <ClCompile Include="Source\Public\Applications\First3DExample.cpp" />
     <ClCompile Include="Source\Public\Applications\IApplication.cpp" />
     <ClCompile Include="Source\Public\Applications\SquareExample.cpp" />
@@ -173,10 +173,8 @@
     <ClCompile Include="Source\Public\Game.cpp" />
     <ClCompile Include="Source\Public\Utilities\Camera\Camera.cpp" />
     <ClCompile Include="Source\Public\Utilities\Disk\DiskSystem.cpp" />
-    <ClCompile Include="Source\Public\Utilities\Mesh\Mesh.cpp" />
     <ClCompile Include="Source\Public\Utilities\Shader\Shader.cpp" />
-    <ClCompile Include="Source\Public\Utilities\Texture\ITexture.cpp" />
-    <ClCompile Include="Source\Public\Utilities\Texture\Texture2D.cpp" />
+    <ClCompile Include="Source\Public\Utilities\Texture\Texture.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

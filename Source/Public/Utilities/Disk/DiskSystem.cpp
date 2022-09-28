@@ -76,7 +76,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path, boo
 			const auto cachedFile = FileCache.find(finalPath.string());
 			// update when the file data was last accessed
 			cachedFile->second->Timestamp = std::chrono::high_resolution_clock::now();
-			Logger::LogInfo("DiskSystem::GetFileCached()", "Returning cached file: " + cachedFile->second->Path.string());
+			Logger::LogInfo("DiskSystem::GetFileCached()", "Returning cached file: " + cachedFile->second->Name);
 			return cachedFile->second;
 		}
 
@@ -97,7 +97,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path, boo
 			fileStream.seekg(0, std::ios::end);
 			const std::streampos fileSize = fileStream.tellg();
 			fileStream.seekg(0, std::ios::beg);
-
+			diskFile->Name = finalPath.filename().string();
 			diskFile->Size = fileSize;
 			diskFile->Data.reserve(fileSize);
 
@@ -107,7 +107,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path, boo
 
 
 			FileCache.try_emplace(finalPath.string(), diskFile);
-			Logger::LogInfo("DiskSystem::GetFileCached()", "Loaded binary file into cache: " + diskFile->Path.string());
+			Logger::LogInfo("DiskSystem::GetFileCached()", "Loaded binary file into cache: " + diskFile->Name);
 		}
 		else
 		{
@@ -118,7 +118,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path, boo
 			}
 			diskFile->Size = diskFile->TextData.length();
 			FileCache.try_emplace(finalPath.string(), diskFile);
-			Logger::LogInfo("DiskSystem::GetFileCached()", "Loaded text file into cache: " + diskFile->Path.string());
+			Logger::LogInfo("DiskSystem::GetFileCached()", "Loaded text file into cache: " + diskFile->Name);
 		}
 		return diskFile;
 	}
@@ -139,6 +139,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path, bool bTex
 	auto diskFile = std::make_shared<DiskFile>();
 	diskFile->bIsText = bTextFile;
 	diskFile->Path = finalPath;
+	diskFile->Name = finalPath.filename().string();
 	auto time = std::chrono::high_resolution_clock::now();
 	diskFile->Timestamp = std::chrono::high_resolution_clock::now();
 	if (std::filesystem::exists(finalPath))
@@ -156,7 +157,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path, bool bTex
 			diskFile->Data.insert(diskFile->Data.begin(),
 				std::istream_iterator<BYTE>(fileStream),
 				std::istream_iterator<BYTE>());
-			Logger::LogInfo("DiskSystem::GetFile()", "Loaded binary file: " + diskFile->Path.string());
+			Logger::LogInfo("DiskSystem::GetFile()", "Loaded binary file: " + diskFile->Name);
 		}
 		else
 		{
@@ -166,7 +167,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path, bool bTex
 				diskFile->TextData += lineContents + "\n";
 			}
 			diskFile->Size = diskFile->TextData.length();
-			Logger::LogInfo("DiskSystem::GetFile()", "Loaded text file: " + diskFile->Path.string());
+			Logger::LogInfo("DiskSystem::GetFile()", "Loaded text file: " + diskFile->Name);
 		}
 		return diskFile;
 	}
