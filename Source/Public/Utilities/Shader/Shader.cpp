@@ -1,5 +1,6 @@
-#include "Shader.h"
-#include "../../Logger.h"
+#include "Utilities/Shader/Shader.h"
+#include "Utilities/Logger.h"
+
 Shader::Shader()
 {
 	VertexShaderFile = "";

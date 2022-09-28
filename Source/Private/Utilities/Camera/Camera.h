@@ -7,7 +7,7 @@
 enum class CameraType
 {
 	Orthographic,
-	Perspective,
+	PerspectiveFreecam,
 };
 
 enum class CameraMode
@@ -19,7 +19,9 @@ enum class CameraMode
 
 enum class CameraMove
 {
+	// Refactor to allow movement in multiple directions at once!
 	Up, Down, Left, Right, Forward, Back
+
 };
 
 class Camera
@@ -36,6 +38,7 @@ public:
 	void ChangeYaw(float degrees);
 	void ChangeRoll(float degrees);
 	void Rotate2D(int x, int y); // for mouse input
+	void Roll2D(float y);
 
 	void SetType(CameraType type);
 	void SetMode(CameraMode mode);
@@ -44,7 +47,7 @@ public:
 	void SetLookAtTarget(glm::vec3 pos);
 	void SetFOV(double fov);
 	void SetViewport(int loc_x, int loc_y, int width, int height);
-	void SetClipping(double near, double far);
+	void SetClipping(double near, double farClip);
 	void SetPos(int button, int state, int x, int y); //mouse_input
 
 	CameraType GetType();
@@ -64,8 +67,10 @@ private:
 	double FClip;
 	bool bRotating;
 	bool bMoving;
+	bool bRolling;
 	float Scale;
 	float RotationScale;
+	float RollScale;
 	float Yaw, Pitch, Roll;
 
 	float MaxYawRate, MaxPitchRate, MaxRollRate;

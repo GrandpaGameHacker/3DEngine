@@ -1,9 +1,10 @@
 #define SDL_MAIN_HANDLED
-
 #define STB_IMAGE_IMPLEMENTATION
+
 #include "Utilities/stb_image.h"
 #include "Applications/First3DExample.h"
-#include "Logger.h"
+#include "Utilities/Logger.h"
+
 int main(int argc, char** argv)
 {
 	SDL_SetMainReady();

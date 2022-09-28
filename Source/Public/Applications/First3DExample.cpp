@@ -1,20 +1,20 @@
-#include "First3DExample.h"
+#include "Applications/First3DExample.h"
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../Utilities/stb_image.h"
-#include "../Logger.h"
+#include "Utilities/stb_image.h"
+#include "Utilities/Logger.h"
 
 void First3DExample::PreLoopInit()
 {
-	Initialize("Example App Textures", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,600 }, 0);
+	Initialize("3D Camera Example", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800,600 }, 0);
 
-	MyShader.SetVertexShader("/Applications/Shaders/3DExample.vert");
-	MyShader.SetFragmentShader("/Applications/Shaders/3DExample.frag");
+	MyShader.SetVertexShader("/Assets/Shaders/3DExample.vs");
+	MyShader.SetFragmentShader("/Assets/Shaders/3DExample.fs");
 	MyShader.Compile();
 
 	float vertices[] = {
-		// positions          // colors           // texture coords
+		// positions          // colors           // texture coordinates
 		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
 		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
 		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
@@ -51,7 +51,7 @@ void First3DExample::PreLoopInit()
 	Texture = Texture2D("Logo_1024x1024.png");
 	MyCamera.SetPosition({0.f, 0.f, 3.f});
 	MyCamera.SetViewport(WRect.x, WRect.y, WRect.w, WRect.h);
-	MyCamera.SetType(CameraType::Perspective);
+	MyCamera.SetType(CameraType::PerspectiveFreecam);
 }
 
 void First3DExample::Tick()
@@ -67,6 +67,9 @@ void First3DExample::EventLoop(SDL_Event* event)
 	case SDL_WINDOWEVENT:
 		if (event->window.event != SDL_WINDOWEVENT_SIZE_CHANGED) break;
 		ResizeHandler(event);
+		break;
+	case SDL_MOUSEWHEEL:
+		MyCamera.Roll2D(event->wheel.preciseY);
 		break;
 	case SDL_KEYDOWN:
 		switch (event->key.keysym.sym)
@@ -101,6 +104,7 @@ void First3DExample::EventLoop(SDL_Event* event)
 			MyCamera.SetMovement(CameraMove::Right, false);
 			break;
 		}
+		break;
 	case SDL_MOUSEMOTION:
 		MyCamera.Rotate2D(event->motion.x , event->motion.y);
 		break;

@@ -1,6 +1,6 @@
-#include "SquareRotate.h"
-#include "../Utilities/stb_image.h"
-#include "../Logger.h"
+#include "Applications/SquareRotate.h"
+#include "Utilities/stb_image.h"
+#include "Utilities/Logger.h"
 
 SquareRotate::~SquareRotate()
 {

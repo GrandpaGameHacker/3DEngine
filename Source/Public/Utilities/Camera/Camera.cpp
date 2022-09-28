@@ -1,11 +1,12 @@
-#include "Camera.h"
+#include "Utilities/Camera/Camera.h"
 #include <SDL2/SDL.h>
 #include <gl/glew.h>
 #include <glm/gtx/quaternion.hpp>
+#include "Utilities/Logger.h"
 Camera::Camera()
 {
 	EMode = CameraMode::Normal;
-	EType = CameraType::Perspective;
+	EType = CameraType::PerspectiveFreecam;
 
 	ViewportX = 0; ViewportY = 0;
 	WindowHeight = 0; WindowWidth = 0;
@@ -25,6 +26,7 @@ Camera::Camera()
 
 	Scale = 0.1f;
 	RotationScale = 0.008f;
+	RollScale = 0.001f;
 	MaxYawRate = 5;
 	MaxPitchRate = 5;
 	MaxRollRate = 5;
@@ -34,7 +36,7 @@ Camera::Camera()
 	Direction = glm::vec3(0, 0, 0);
 	Mouse = glm::vec3(0, 0, 0);
 
-		Projection = glm::mat4(1);
+	Projection = glm::mat4(1);
 	View = glm::mat4(1);
 	Model = glm::mat4(1);
 	MVP = glm::mat4(1);
@@ -42,17 +44,35 @@ Camera::Camera()
 
 void Camera::Update()
 {
-	// bug?? if rotating at same time rotation gets fuxxed
-	if (bMoving)
-		Move(EMovement);
-	Direction = glm::normalize(LookAt - Position);
-	glViewport(ViewportX, ViewportY, WindowWidth, WindowHeight);
 
+	Projection = glm::mat4(1);
+	View = glm::mat4(1);
+	Model = glm::mat4(1);
+	MVP = glm::mat4(1);
+
+	if (bMoving) {
+		Move(EMovement);
+	}
+
+	switch (EMode)
+	{
+	case CameraMode::Vertex:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		break;
+	case CameraMode::Wireframe:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		break;
+	case CameraMode::Normal:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		break;
+	}
+
+	Direction = glm::normalize(LookAt - Position);
 	if(EType == CameraType::Orthographic)
 	{
 		Projection = glm::ortho(-1.5f * (float)Aspect, -1.5f * (float)Aspect, -1.5f, -1.5f, -10.f, -10.f);
 	}
-	else if(EType == CameraType::Perspective)
+	else if(EType == CameraType::PerspectiveFreecam)
 	{
 		Projection = glm::perspective(FOV, Aspect, NClip, FClip);
 		glm::vec3 PAxis = glm::cross(Direction, Up);
@@ -74,7 +94,6 @@ void Camera::Update()
 	}
 
 	View = glm::lookAt(Position, LookAt, Up);
-	Model = glm::mat4(1);
 	MVP = Projection * View * Model;
 }
 
@@ -91,7 +110,7 @@ void Camera::SetMovement(CameraMove move, bool moving)
 
 void Camera::Move(CameraMove direction)
 {
-	if(EType == CameraType::Perspective)
+	if(EType == CameraType::PerspectiveFreecam)
 	{
 		switch(direction)
 		{
@@ -161,26 +180,7 @@ void Camera::ChangeYaw(float degrees)
 
 void Camera::ChangeRoll(float degrees)
 {
-	// Unused
-	if (degrees < -MaxRollRate)
-	{
-		degrees = -MaxRollRate;
-	}
-	else if (degrees < MaxRollRate)
-	{
-		degrees = MaxRollRate;
-	}
 	Roll += degrees;
-
-	if (Roll > 360.f)
-	{
-		Roll -= 360.f;
-	}
-	else if (Roll < -360.f)
-	{
-		Roll += 360.f;
-	}
-
 }
 
 void Camera::Rotate2D(int x, int y)
@@ -192,6 +192,11 @@ void Camera::Rotate2D(int x, int y)
 		ChangePitch(RotationScale * MouseDelta.y);
 	}
 	Mouse = glm::vec3(x, y, 0);
+}
+
+void Camera::Roll2D(float y)
+{
+	ChangeRoll(glm::radians(y*2));
 }
 
 void Camera::SetType(CameraType type)
@@ -230,10 +235,10 @@ void Camera::SetViewport(int loc_x, int loc_y, int width, int height)
 	Aspect = static_cast<double>(width) / static_cast<double>(height);
 }
 
-void Camera::SetClipping(double near, double far)
+void Camera::SetClipping(double nearClip, double farClip)
 {
-	NClip = near;
-	FClip = far;
+	NClip = nearClip;
+	FClip = farClip;
 }
 
 void Camera::SetPos(int button, int state, int x, int y)

@@ -1,6 +1,6 @@
-#include "DiskSystem.h"
+#include "Utilities\Disk\DiskSystem.h"
 #include <fstream>
-#include "..\..\Logger.h"
+#include "Utilities\Logger.h"
 
 bool DiskFile::IsStale() const
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include <gl\glew.h>
-#include "Shaders/Shader.h"
+#include "Utilities/Shader/Shader.h"
 #include "IApplication.h"
 class TextureExample : public IApplication
 {

@@ -1,5 +1,5 @@
-#include "IApplication.h"
-#include "..\Logger.h"
+#include "Applications\IApplication.h"
+#include "Utilities\Logger.h"
 #include "gl\glew.h"
 #include <chrono>
 

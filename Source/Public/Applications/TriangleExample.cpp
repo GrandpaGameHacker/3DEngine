@@ -1,7 +1,8 @@
-#include "TriangleExample.h"
-#include "../Logger.h"
-#include "../Utilities/Disk/DiskSystem.h"
-#include "Shaders/Shader.h"
+#include "Applications/TriangleExample.h"
+#include "Utilities/Logger.h"
+#include "Utilities/Disk/DiskSystem.h"
+#include "Utilities/Shader/Shader.h"
+
 void TriangleExample::PreLoopInit()
 {
 	Initialize("TriangleExample", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600 }, NULL);

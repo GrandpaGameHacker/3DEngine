@@ -1,7 +1,7 @@
-#include "Texture2D.h"
-#include "../Utilities/stb_image.h"
-#include "../Utilities/Disk/DiskSystem.h"
-#include "../Logger.h"
+#include "Utilities/Texture/Texture2D.h"
+#include "Utilities/stb_image.h"
+#include "Utilities/Disk/DiskSystem.h"
+#include "Utilities/Logger.h"
 
 GLuint Texture2D::GetTexture()
 {

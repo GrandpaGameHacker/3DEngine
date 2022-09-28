@@ -396,3 +396,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Assets/Models/homer_40.off
+/Assets/Models/homer_35.off
+/Assets/Models/homer_0.15_40_simplified.off
+/Assets/Models/homer_0.15_40.off
+/Assets/Models/homer_0.15_35.off
+/Assets/Models/homer_0.00235_mmgs.off
+/Assets/Models/homer.off

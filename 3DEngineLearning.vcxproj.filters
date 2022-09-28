@@ -21,9 +21,6 @@
     <ClInclude Include="Applications\IApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Applications\TextureExample.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -36,7 +33,7 @@
     <ClInclude Include="Applications\SquareExample.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Applications\Shaders\Shader.h">
+    <ClInclude Include="Utilities\Shader\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Applications\SquareRotate.h">
@@ -45,13 +42,58 @@
     <ClInclude Include="Applications\First3DExample.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Textures\ITexture.h">
+    <ClInclude Include="Utilities\Texture\ITexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Textures\Texture2D.h">
+    <ClInclude Include="Utilities\Texture\Texture2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utilities\Camera\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Mesh\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Applications\First3DExample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Applications\IApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Applications\SquareExample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Applications\SquareRotate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Applications\TextureExample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Applications\TriangleExample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Utilities\Camera\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Utilities\Disk\DiskSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Utilities\Mesh\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Utilities\Shader\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Utilities\Texture\ITexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Utilities\Texture\Texture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Utilities\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Utilities\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -60,9 +102,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Applications\IApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Applications\TextureExample.cpp">
@@ -74,7 +113,7 @@
     <ClCompile Include="Applications\SquareExample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Applications\Shaders\Shader.cpp">
+    <ClCompile Include="Utilities\Shader\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Applications\SquareRotate.cpp">
@@ -83,24 +122,66 @@
     <ClCompile Include="Applications\First3DExample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Textures\Texture2D.cpp">
+    <ClCompile Include="Utilities\Texture\Texture2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Textures\ITexture.cpp">
+    <ClCompile Include="Utilities\Texture\ITexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utilities\Camera\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities\Mesh\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Applications\First3DExample.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Applications\IApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Applications\SquareExample.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Applications\SquareRotate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Applications\TextureExample.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Applications\TriangleExample.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Utilities\Camera\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Utilities\Disk\DiskSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Utilities\Mesh\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Utilities\Shader\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Utilities\Texture\ITexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Utilities\Texture\Texture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Applications\Shaders\TriangleExampleFragment.frag" />
-    <None Include="Applications\Shaders\TriangleExampleVertex.vert" />
-    <None Include="Applications\Shaders\TextureExample.frag" />
-    <None Include="Applications\Shaders\TextureExample.vert" />
-    <None Include="Applications\Shaders\TextureExample2.frag" />
-    <None Include="Applications\Shaders\TextureExample2.vert" />
-    <None Include="Applications\Shaders\SquareRotate.frag" />
-    <None Include="Applications\Shaders\SquareRotate.vert" />
+    <None Include="Assets\Shaders\TriangleExampleFragment.frag" />
+    <None Include="Assets\Shaders\TriangleExampleVertex.vert" />
+    <None Include="Assets\Shaders\TextureExample.frag" />
+    <None Include="Assets\Shaders\TextureExample.vert" />
+    <None Include="Assets\Shaders\TextureExample2.frag" />
+    <None Include="Assets\Shaders\TextureExample2.vert" />
+    <None Include="Assets\Shaders\SquareRotate.frag" />
+    <None Include="Assets\Shaders\SquareRotate.vert" />
   </ItemGroup>
 </Project>

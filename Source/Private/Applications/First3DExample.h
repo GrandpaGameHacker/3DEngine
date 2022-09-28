@@ -1,7 +1,7 @@
 #pragma once
 #include <gl/glew.h>
-#include "../Textures/Texture2D.h"
-#include "Shaders/Shader.h"
+#include "Utilities/Texture/Texture2D.h"
+#include "Utilities/Shader/Shader.h"
 #include "IApplication.h"
 #include "../Utilities/Camera/Camera.h"
 

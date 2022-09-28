@@ -1,14 +1,15 @@
 #pragma once
 #include <gl/glew.h>
-#include "Shaders/Shader.h"
+#include "Utilities/Shader/Shader.h"
 #include "IApplication.h"
-class SquareExample : public IApplication
+class TriangleExample : public IApplication
 {
 public:
 	void PreLoopInit() override;
-	void EventLoop(SDL_Event* event) override;
 	void Draw() override;
 	void Tick() override;
-	GLuint vao;
+private:
+	GLuint vao = 0;
 	Shader MyShader;
 };
+

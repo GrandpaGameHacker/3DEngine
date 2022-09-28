@@ -1,7 +1,7 @@
 #pragma once
 #include <gl/glew.h>
 #include <glm/glm.hpp>
-#include "../../Utilities/Disk/DiskSystem.h"
+#include "Utilities/Disk/DiskSystem.h"
 class Shader
 {
 public:

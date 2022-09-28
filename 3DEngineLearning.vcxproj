@@ -78,9 +78,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <SourcePath>$(VC_SourcePath)</SourcePath>
+    <IncludePath>$(ProjectDir)\Source\Private;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <SourcePath>$(VC_SourcePath)</SourcePath>
+    <IncludePath>$(ProjectDir)\Source\Private;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -144,43 +148,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Applications\TriangleExample.h" />
-    <ClInclude Include="Applications\SquareExample.h" />
-    <ClInclude Include="Applications\Shaders\Shader.h" />
-    <ClInclude Include="Applications\SquareRotate.h" />
-    <ClInclude Include="Applications\First3DExample.h" />
-    <ClInclude Include="Textures\Texture2D.h" />
-    <ClInclude Include="Textures\ITexture.h" />
-    <ClInclude Include="Utilities\Camera\Camera.h" />
-    <ClInclude Include="Utilities\Disk\DiskSystem.h" />
-    <ClInclude Include="Applications\IApplication.h" />
-    <ClInclude Include="Applications\TextureExample.h" />
-    <ClInclude Include="Logger.h" />
-    <ClInclude Include="Utilities\stb_image.h" />
+    <ClInclude Include="Source\Private\Applications\First3DExample.h" />
+    <ClInclude Include="Source\Private\Applications\IApplication.h" />
+    <ClInclude Include="Source\Private\Applications\SquareExample.h" />
+    <ClInclude Include="Source\Private\Applications\SquareRotate.h" />
+    <ClInclude Include="Source\Private\Applications\TextureExample.h" />
+    <ClInclude Include="Source\Private\Applications\TriangleExample.h" />
+    <ClInclude Include="Source\Private\Utilities\Logger.h" />
+    <ClInclude Include="Source\Private\Utilities\Camera\Camera.h" />
+    <ClInclude Include="Source\Private\Utilities\Disk\DiskSystem.h" />
+    <ClInclude Include="Source\Private\Utilities\Mesh\Mesh.h" />
+    <ClInclude Include="Source\Private\Utilities\Shader\Shader.h" />
+    <ClInclude Include="Source\Private\Utilities\stb_image.h" />
+    <ClInclude Include="Source\Private\Utilities\Texture\ITexture.h" />
+    <ClInclude Include="Source\Private\Utilities\Texture\Texture2D.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Applications\TriangleExample.cpp" />
-    <ClCompile Include="Applications\SquareExample.cpp" />
-    <ClCompile Include="Applications\Shaders\Shader.cpp" />
-    <ClCompile Include="Applications\SquareRotate.cpp" />
-    <ClCompile Include="Applications\First3DExample.cpp" />
-    <ClCompile Include="Textures\ITexture.cpp" />
-    <ClCompile Include="Textures\Texture2D.cpp" />
-    <ClCompile Include="Utilities\Camera\Camera.cpp" />
-    <ClCompile Include="Utilities\Disk\DiskSystem.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Applications\IApplication.cpp" />
-    <ClCompile Include="Applications\TextureExample.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Applications\Shaders\SquareRotate.frag" />
-    <None Include="Applications\Shaders\SquareRotate.vert" />
-    <None Include="Applications\Shaders\TextureExample.frag" />
-    <None Include="Applications\Shaders\TextureExample.vert" />
-    <None Include="Applications\Shaders\TextureExample2.frag" />
-    <None Include="Applications\Shaders\TextureExample2.vert" />
-    <None Include="Applications\Shaders\TriangleExampleFragment.frag" />
-    <None Include="Applications\Shaders\TriangleExampleVertex.vert" />
+    <ClCompile Include="Source\Public\Applications\First3DExample.cpp" />
+    <ClCompile Include="Source\Public\Applications\IApplication.cpp" />
+    <ClCompile Include="Source\Public\Applications\SquareExample.cpp" />
+    <ClCompile Include="Source\Public\Applications\SquareRotate.cpp" />
+    <ClCompile Include="Source\Public\Applications\TextureExample.cpp" />
+    <ClCompile Include="Source\Public\Applications\TriangleExample.cpp" />
+    <ClCompile Include="Source\Public\Game.cpp" />
+    <ClCompile Include="Source\Public\Utilities\Camera\Camera.cpp" />
+    <ClCompile Include="Source\Public\Utilities\Disk\DiskSystem.cpp" />
+    <ClCompile Include="Source\Public\Utilities\Mesh\Mesh.cpp" />
+    <ClCompile Include="Source\Public\Utilities\Shader\Shader.cpp" />
+    <ClCompile Include="Source\Public\Utilities\Texture\ITexture.cpp" />
+    <ClCompile Include="Source\Public\Utilities\Texture\Texture2D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
