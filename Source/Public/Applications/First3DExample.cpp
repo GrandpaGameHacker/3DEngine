@@ -40,18 +40,27 @@ void First3DExample::EventLoop(SDL_Event* event)
 	case SDL_KEYDOWN:
 		switch (event->key.keysym.sym)
 		{
-			case 'w':
-				MyCamera.SetMovement(CameraMove::Forward, true);
+		case 'p':
+			MyCamera.SetMode(CameraMode::Wireframe);
 			break;
-			case 's':
-				MyCamera.SetMovement(CameraMove::Back, true);
+		case 'o':
+			MyCamera.SetMode(CameraMode::Vertex);
 			break;
-			case 'a':
-				MyCamera.SetMovement(CameraMove::Left, true);
-				break;
-			case 'd':
-				MyCamera.SetMovement(CameraMove::Right, true);
-				break;
+		case 'i':
+			MyCamera.SetMode(CameraMode::Normal);
+			break;
+		case 'w':
+			MyCamera.SetMovement(CameraMove::Forward, true);
+			break;
+		case 's':
+			MyCamera.SetMovement(CameraMove::Back, true);
+			break;
+		case 'a':
+			MyCamera.SetMovement(CameraMove::Left, true);
+			break;
+		case 'd':
+			MyCamera.SetMovement(CameraMove::Right, true);
+			break;
 		}
 			break;
 	case SDL_KEYUP:
