@@ -1,7 +1,6 @@
 #pragma once
 #include <gl/glew.h>
-#include "Utilities/Texture/Texture.h"
-#include "Utilities/Shader/Shader.h"
+#include "Utilities/Model/Model.h"
 #include "IApplication.h"
 #include "../Utilities/Camera/Camera.h"
 
@@ -14,7 +13,7 @@ class First3DExample :
 	void Draw() override;
 	void ResizeHandler(SDL_Event* event) override;
 	GLuint vao = 0;
-	Texture MyTexture;
+	Model MyModel;
 	Shader MyShader;
 	Camera MyCamera;
 };

@@ -148,7 +148,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Private\Utilities\Mesh\Mesh.h" />
+    <ClInclude Include="Source\Private\Utilities\Model\Model.h" />
+    <ClInclude Include="Source\Private\Utilities\Model\Mesh.h" />
     <ClInclude Include="Source\Private\Applications\First3DExample.h" />
     <ClInclude Include="Source\Private\Applications\IApplication.h" />
     <ClInclude Include="Source\Private\Applications\SquareExample.h" />
@@ -163,7 +164,8 @@
     <ClInclude Include="Source\Private\Utilities\Texture\Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Public\Utilities\Mesh\Mesh.cpp" />
+    <ClCompile Include="Source\Public\Utilities\Model\Model.cpp" />
+    <ClCompile Include="Source\Public\Utilities\Model\Mesh.cpp" />
     <ClCompile Include="Source\Public\Applications\First3DExample.cpp" />
     <ClCompile Include="Source\Public\Applications\IApplication.cpp" />
     <ClCompile Include="Source\Public\Applications\SquareExample.cpp" />

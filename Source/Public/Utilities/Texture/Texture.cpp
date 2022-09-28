@@ -6,7 +6,7 @@ Texture::Texture(GLenum target, const std::string& path)
 {
 	Target = target;
 	FilePath = path;
-	FileName = std::filesystem::path(path).filename().string();
+	FileName = std::filesystem::path(path).stem().string();
 	Width = 0;
 	Height = 0;
 	BPP = 0;
@@ -38,6 +38,7 @@ bool Texture::Load()
 	}
 
 	LoadInternal(textureData);
+	stbi_image_free(textureData);
 	Logger::LogInfo("Texture::Texture()", "Texture: " + FileName + " Loaded");
 
 
@@ -56,6 +57,7 @@ bool Texture::Load(unsigned char* data, unsigned int size)
 
 		Logger::LogInfo("Texture::Texture()", "Texture: Loaded from memory!");
 		LoadInternal(textureData);
+		stbi_image_free(textureData);
 		return true;
 	}
 	else {
@@ -145,4 +147,19 @@ void Texture::LoadInternal(void* textureData)
 	glTexParameteri(Target, GL_TEXTURE_MIN_FILTER, Min);
 	glTexParameteri(Target, GL_TEXTURE_MAG_FILTER, Mag);
 	glBindTexture(Target, 0);
+}
+
+Texture LoadCachedTexture(GLenum target, const std::string& path)
+{
+	static std::unordered_map<std::string, Texture> TextureCache;
+	if (!TextureCache.empty())
+	{
+		const auto cachedFile = TextureCache.find(path);
+		if(cachedFile != TextureCache.end())
+			return cachedFile->second;
+	}
+	auto tex = Texture(target, path);
+	tex.Load();
+	TextureCache.try_emplace(path, tex);
+	return tex;
 }

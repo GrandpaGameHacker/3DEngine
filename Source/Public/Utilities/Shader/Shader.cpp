@@ -181,6 +181,11 @@ void Shader::Set(std::string name, int value)
 	glUniform1i(glGetUniformLocation(ShaderProgram, name.c_str()), value);
 }
 
+void Shader::Set(std::string name, unsigned int value)
+{
+	glUniform1i(glGetUniformLocation(ShaderProgram, name.c_str()), value);
+}
+
 void Shader::Set(std::string name, float value)
 {
 	glUniform1f(glGetUniformLocation(ShaderProgram, name.c_str()), value);

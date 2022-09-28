@@ -18,6 +18,7 @@ public:
 
 	void Set(std::string name, bool value);
 	void Set(std::string name, int value);
+	void Set(std::string name, unsigned int value);
 	void Set(std::string name, float value);
 	void Set(std::string name, glm::vec2 &value);
 	void Set(std::string name, float x, float y);

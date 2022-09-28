@@ -48,10 +48,13 @@
     <ClInclude Include="Source\Private\Utilities\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Private\Utilities\Mesh\Mesh.h">
+    <ClInclude Include="Source\Private\Utilities\Model\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Private\Utilities\Texture\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Private\Utilities\Model\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -86,10 +89,13 @@
     <ClCompile Include="Source\Public\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Public\Utilities\Mesh\Mesh.cpp">
+    <ClCompile Include="Source\Public\Utilities\Model\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Public\Utilities\Texture\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Public\Utilities\Model\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

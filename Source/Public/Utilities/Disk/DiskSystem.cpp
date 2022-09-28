@@ -82,7 +82,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path, boo
 
 	}
 	
-	// cache doesnt exist, Try load file into cache
+	// cache doesn't exist, Try load file into cache
 
 	auto diskFile = std::make_shared<DiskFile>();
 	diskFile->bIsText = bTextFile;
@@ -97,7 +97,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFileCached(const std::string& path, boo
 			fileStream.seekg(0, std::ios::end);
 			const std::streampos fileSize = fileStream.tellg();
 			fileStream.seekg(0, std::ios::beg);
-			diskFile->Name = finalPath.filename().string();
+			diskFile->Name = finalPath.stem().string();
 			diskFile->Size = fileSize;
 			diskFile->Data.reserve(fileSize);
 
@@ -139,7 +139,7 @@ std::shared_ptr<DiskFile> DiskSystem::GetFile(const std::string& path, bool bTex
 	auto diskFile = std::make_shared<DiskFile>();
 	diskFile->bIsText = bTextFile;
 	diskFile->Path = finalPath;
-	diskFile->Name = finalPath.filename().string();
+	diskFile->Name = finalPath.stem().string();
 	auto time = std::chrono::high_resolution_clock::now();
 	diskFile->Timestamp = std::chrono::high_resolution_clock::now();
 	if (std::filesystem::exists(finalPath))

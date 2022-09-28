@@ -1,6 +1,7 @@
 #pragma once
 #include <gl/glew.h>
 #include <string>
+#include <unordered_map>
 class Texture
 {
 public:
@@ -15,9 +16,7 @@ public:
 	void GetSize(int& Width, int& Height);
 	void GetName(std::string& Name);
 	void GetPath(std::string& Path);
-private:
 	void LoadInternal(void* textureData);
-
 	std::string FilePath;
 	std::string FileName;
 	GLenum Target;
@@ -28,3 +27,4 @@ private:
 	int BPP;
 };
 
+Texture LoadCachedTexture(GLenum target, const std::string& path);

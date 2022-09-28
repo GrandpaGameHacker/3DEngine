@@ -13,43 +13,8 @@ void First3DExample::PreLoopInit()
 	MyShader.SetFragmentShader("/Assets/Shaders/3DExample.fs");
 	MyShader.Compile();
 
-	float vertices[] = {
-		// positions          // colors           // texture coordinates
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
-	};
+	MyModel = Model(std::filesystem::current_path().string() + "/Assets/Models/backpack.obj");
 
-	int indices[] = {
-		1,2,3,
-		0,1,3,
-	};
-
-	GLuint vbo, ebo;
-
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
-	glBindVertexArray(vao);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)3);
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	MyTexture = Texture(GL_TEXTURE_2D,"Logo_1024x1024.png");
-	MyTexture.Load();
 	MyCamera.SetPosition({0.f, 0.f, 3.f});
 	MyCamera.SetViewport(WRect.x, WRect.y, WRect.w, WRect.h);
 	MyCamera.SetType(CameraType::PerspectiveFreecam);
@@ -125,13 +90,10 @@ void First3DExample::Draw()
 	MyShader.Use();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);;
 	glm::mat4 MVP;
-	MyTexture.Bind(0);
 	MyCamera.Update();
 	MyCamera.GetMVP(MVP);
 	MyShader.Set("MVP", MVP);
-
-	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	MyModel.Draw(MyShader);
 	SDL_GL_SwapWindow(Window);
 }
 
